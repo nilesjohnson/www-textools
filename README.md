@@ -1,62 +1,24 @@
-## TeX templates
+# www-textools
 
-### Description
+A collection of TeX-related things. 
 
-Here we collect template starter directory for writing TeX projects.
-Included here are
+To use: download the relevant class (`.cls`) and package (`.sty`) files. You may need to read the source to see what are the dependencies. 
 
-- custom TeX class files (`.cls`) 
-- custom TeX packages (`.sty`)
-- pre-configured TeX templates (`.tex-template`)
+I provide some pre-configured TeX templates (`.tex-template`). 
 
-The reason that the class and package files are included is because
-they are not publicly available on CTAN (and I don't intend them to
-be), so when changing computers or collaborating it is a hassle to
-remember to copy the relevant class and style files from "out of the
-tree". 
+To include the git version information in your document please see the section on Publishing below. 
 
-Furthermore, by including the files in the templates here I don't have
-to worry about backward compatibility since modifying the class files
-will not affect finished projects. 
-
-I included pre-configured TeX templates to include export-subst
-compatible strings to use with the class files. The class files can
-still be used without such configuration, of course; this however
-provides a way to mark archival copies with their git commit
-information. (The reason that the templates are named `.tex-template`
-is to prevent export-subst from acting on the archive downloads from
-_this_ repository.)
-
-### Use
-
-#### Instantiation
-
-On local machine (downloads the current version of the template
-without cloning the history):   
-```console
-mkdir <project name>
-cd <project name>
-git archive --format=tar --remote=https://gitlab.com/wwywong/TeX-template.git HEAD | tar xf -
-git init
-```
-Then you can delete all the unused template files (and class/style
-files if you know what you are doing) and just rename the
-one you want to use  
-```console
-mv Templates/template-article.tex-template myarticle.tex
-rm -rf Templates
-git add *
-git commit -m "Setup the project directory"
-```
-and you are good to go. 
-
-#### Publishing
+## Publishing
 
 While working on the project, you probably don't need to worry about
 versioning information: you can keep track of it using Git. But when
 posting pre-prints on your website or on the arXiv, it would be
 convenient to keep some version information handy in case of
 questions. 
+
+I am assuming you are using the work-flow where each "publication" lives in its own git repo. 
+
+To do so make sure the `.gitattributes` file is downloaded from here. Alternatively edit your local one to include the line `*.tex export-subst`. 
 
 Instead of directly posting files from the project to arXiv, use `git
 archive`. 
