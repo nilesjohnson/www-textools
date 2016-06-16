@@ -1,0 +1,49 @@
+\documentclass{seminar}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage[T1]{fontenc}
+\usepackage[intlimits,sumlimits,noDcommand,narrowiints]{kpfonts}
+\usepackage[pdfusetitle,hidelinks]{hyperref}
+
+\usepackage[geom,slash,sets,norm,pde,miscops,roman]{www_math_commands}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{remark}
+\newtheorem{question}{Question}
+\newtheorem{conjecture}{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{property}{Property}
+
+
+% Remove tombstone effect
+\slideframe{none}
+
+\begin{document}
+
+\begin{slide}
+~
+
+\vskip1pc
+{\bf \large Title}
+
+{\bf subtitle}\\
+{\it based on joint work with}
+
+\vskip3pc
+
+
+Willie WY Wong \hfill Michigan State \\
+\url{wongwwy@member.ams.org}
+
+\vskip3pc
+
+{\it Date \hfill Seminar \hfill Place}
+\end{slide}
+
+\begin{slide}
+\end{slide}
+
+\end{document}

@@ -1,0 +1,38 @@
+\documentclass[leqno]{wwwlnb}
+
+\usetagcombos{test1+test2,test3}
+
+\title{Research Notes 2016.01--current}
+\subtitle{Michigan State University}
+\author{Willie Wai Yeung Wong}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\cleardoublepage
+
+\chapter*{Entries}
+
+\input{MSU-entries/MSU-2016-Spring}
+
+
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{part}{Bibliography}
+\bibliographystyle{amsalpha}
+\bibliography{mixmaster}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{part}{Open Questions}
+\chapter*{Questions}
+
+\listtheorems{quest}
+\chapter*{Answers}
+\listtheorems{answer}
+
+\end{document}

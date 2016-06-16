@@ -1,0 +1,59 @@
+\documentclass[amssymb,amsfonts]{amsart}
+\usepackage{amssymb, latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[intlimits,sumlimits,noDcommand,narrowiints]{kpfonts}
+\usepackage{microtype}
+\usepackage{showkeys}
+\usepackage{paralist}
+\usepackage{ifthen}
+\usepackage{framed}
+\usepackage{svn}
+\usepackage[pdfusetitle]{hyperref}
+
+% May need to be removed when done!
+\usepackage{www_math_commands}
+\usepackage[noocg]{www_helper_commands}
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{cor}[thm]{Corollary}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{exe}{Exercise}
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+
+
+%%% In the code below author is not the same as the person making the
+%%% committ; see http://git-scm.com/docs/git-commit option --author
+%%% for more information
+\begingroup
+\catcode`\%=12
+\catcode`\$=12
+\gdef\gitShortHash{$Format:%h$}
+\gdef\gitAuthorName{$Format:%aN$}
+\gdef\gitAuthorEmail{$Format:%aE$}
+\gdef\gitAuthorDate{$Format:%ai$}
+\gdef\gitRefNames{$Format:%d$}
+\gdef\GitPageFooter{$Format: v:\texttt{%h %d}; last edit: %aN on %ai.$}
+\endgroup
+
+\newcommand*\instructorversion{true}
+\newcommand\instcomment[1]{\ifthenelse{\equal{\instructorversion}{true}}{%
+\begin{framed}#1\end{framed}}{}}
+
+\begin{document}
+\title[???]{Lecture Notes on ???}
+\author[WWY Wong]{Willie Wai-Yeung Wong}
+\address{Michigan State University}
+\thanks{\GitPageFooter}
+\email{wongwwy@member.ams.org}
+
+\maketitle
+%\tableofcontents
+
+\end{document}

@@ -1,0 +1,153 @@
+\ProvidesPackage{www_math_commands}
+
+% Define Options
+\newif\if@geometry
+\newif\if@standardsets
+\newif\if@slashed
+\newif\if@norms
+\newif\if@errorterms
+\newif\if@pde
+\newif\if@miscops
+\newif\if@misclabeled
+\newif\if@roman
+\newif\if@convex
+
+\DeclareOption{geom}{\@geometrytrue \typeout{Loaded geometry commands}}
+\DeclareOption{slash}{\@slashedtrue \typeout{Enabled slashed commands}}
+\DeclareOption{sets}{\@standardsetstrue \typeout{Additional sets and set-builder are enabled}}
+\DeclareOption{norm}{\@normstrue \typeout{Loaded norm-like commands}}
+\DeclareOption{errorterm}{\@errortermstrue \typeout{Enabled automatic error terms}}
+\DeclareOption{pde}{\@pdetrue \typeout{Loaded PDE and functional analysis commands}}
+\DeclareOption{miscops}{\@miscopstrue \typeout{Loaded miscellaneous operators}}
+\DeclareOption{labeled}{\@misclabeledtrue \typeout{Loaded miscellaneous labeled objects}}
+\DeclareOption{roman}{\@romantrue \typeout{Enabled Roman numerals for term numbering}}
+\DeclareOption{conv}{\@convextrue \typeout{Enabled convex analysis commands}}
+
+\ProcessOptions\relax
+
+%%%%% Math commands definitions %%%%%
+% Some always-defined objects due to their common use.
+\newcommand*\eqdef{\overset{\mbox{\tiny{def}}}{=}}
+\newcommand*\suchthat{\ensuremath{~\textrm{s.t.}~}}
+\newcommand*\pholder[1][\bullet]{\mathord{#1}}  % Place holder symbol for expressions like 
+    %  E(t) = \pnorm{f(t,\pholder)}{L^2(\Real)}
+    % Configurable to use other symbols, such as \pholder[-] 
+\newcommand*\Real{\ensuremath{\mathbb{R}}}
+\newcommand*\Complex{\ensuremath{\mathbb{C}}}
+\newcommand*\Integer{\ensuremath{\mathbb{Z}}}
+\newcommand*\Natural{\ensuremath{\mathbb{N}}}
+\newcommand*\Id{\ensuremath{\mathbf{1}}}
+% The starred version \D* adds no space correction, and is meant to be
+% used for differential forms and expressions like d/dt. The unstarred
+% version is meant to be used for the volume measure in integrals to
+% get better spacing.
+\newcommand*\D{\@ifstar\D@Star\D@noStar}
+\newcommand*\D@noStar[1][]{\ensuremath{~\mathrm{d}#1}}
+\newcommand*\D@Star[1][]{\ensuremath{\mathrm{d}#1}}
+
+
+% Standard differential/semi-Riemannian geometry commands
+\if@geometry
+\RequirePackage{tensor}
+\newcommand*{\covD}{\nabla}
+\newcommand*{\lieD}{\mathcal{L}}
+\newcommand*{\codiff}{\delta}
+\newcommand*{\intprod}{\iota}
+\newcommand*{\Riem}[1][]{\tensor{\mathrm{Riem}}{#1}}
+\newcommand*{\Ricci}[1][]{\tensor{\mathrm{Ric}}{#1}}
+\newcommand*{\Deform}[3][0]{\tensor[^{(#2,#1)}]{\pi}{#3}}
+\newcommand*{\Chris}[1]{\tensor{\Gamma}{#1}}
+\newcommand*\ub[1]{\smash{\underline{#1}}} % underbar
+\renewcommand*\bar[1]{\smash{\overline{#1}}} % redefine bar so it matches the underbar
+\newcommand*\Scri{\mathscr{I}}
+\newcommand*{\Dvol}{\mathrm{dvol}}
+
+% Geometry stuff using slashed
+\if@slashed
+\RequirePackage{slashed}
+\declareslashed{}{/}{.05}{.1}{\nabla} 
+%See slashed.sty for the syntax for above. The third and fourth
+%parameters are for horizontal and vertical adjustments of the slash
+\newcommand*{\subD}{\slashed\nabla}
+\declareslashed{}{/}{0}{-.1}{\triangle}
+\newcommand*{\subDD}{\slashed\triangle}
+\fi
+\fi
+
+% Error terms (using the "constants" package)
+\if@errorterms
+\RequirePackage{constants}
+\newconstantfamily{errorterms}{symbol=\mathfrak{e}}
+\newcommand{\errs}{\ensuremath{\C[errorterms]}}
+\newcommand{\errslab}[1]{\ensuremath{\Cl[errorterms]{#1}}}
+\newcommand{\errsref}[1]{\ensuremath{\Cr{#1}}}
+\fi
+
+% Basic norm type objects
+\if@norms
+\newcommand*{\innerprod}[3][]{\left\langle #2,#3\right\rangle_{#1}}
+\newcommand*\abs[2][]{\left\lvert #2\right\rvert_{#1}}
+\newcommand*\norm[2][]{\left\lVert #2\right\rVert_{#1}}
+\fi
+
+% Additional sets and set notation
+\if@standardsets
+\newcommand*\set[2]{\left\{\; #1 \;\middle|\; #2 \;\right\}}
+\newcommand*\Rational{\ensuremath{\mathbb{Q}}}
+\newcommand*\Sphere{\ensuremath{\mathbb{S}}}
+\newcommand*\Torus{\ensuremath{\mathbb{T}}}
+\newcommand*\Ball{\ensuremath{\mathbb{B}}}
+\newcommand*\RProj{\ensuremath{\mathbb{RP}}} 
+\newcommand*\CProj{\ensuremath{\mathbb{CP}}}
+\fi
+
+% PDE and functional analysis commands
+\if@pde
+\newcommand*\weakto{\underset{\mbox{\tiny{weak}}}{\to}}
+\newcommand*\Sobolev{\@ifstar\Sobolev@Star\Sobolev@noStar}
+\newcommand*\Sobolev@noStar[2]{W^{#1,#2}}
+\newcommand*\Sobolev@Star[2]{\mathring{W}^{#1,#2}}
+\newcommand*\sobolev{\@ifstar\sobolev@Star\sobolev@noStar}
+\newcommand*\sobolev@noStar[1]{H^{#1}}
+\newcommand*\sobolev@Star[1]{\mathring{H}^{#1}}
+\newcommand*\Schwartz{\mathscr{S}}
+\newcommand*\jb[1]{\left\langle #1 \right\rangle} % Japanese Bracket
+\DeclareMathOperator{\Fourrier}{\mathscr{F}} % Fourier transform symbol
+\newcommand*\FT{\@ifstar\FT@star\FT@nostar} 
+\newcommand*\FT@nostar[1]{\widehat{#1}} % Fourier transform with hat
+\newcommand*\FT@star[1]{\widetilde{#1}} % Fourier transform with tilde (starred version)
+\fi
+
+% Convex analysis commands
+\if@convex
+\newcommand*\lnsgm[2][]{\overline{#2}^{#1}}
+\DeclareMathOperator{\hull}{conv} % Convex Hull operator
+\fi
+
+% Miscellaneous operators
+\if@miscops
+\DeclareMathOperator{\trace}{tr}
+\DeclareMathOperator{\proj}{pr}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\sign}{sgn}
+\fi
+
+% Various labelled stuff
+\if@misclabeled
+\newcommand*\morph[1]{\overset{\mbox{\tiny #1}}{\cong}}
+\newcommand*\fnto[1]{\overset{#1}{\to}}
+\fi
+
+%------Start Roman numeral commands
+\if@roman
+\newcommand*{\rmnum}[1]{\romannumeral #1}
+\newcommand*{\Rmnum}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\newcommand*{\term}[1]{\ensuremath{\mathit{\Rmnum{#1}}}}
+  %This command is for splitting an expression into sub-parts. Using
+  %this formulation the spacing is corrected. 
+\fi
+%------End Roman numeral commands
+%%%%% End Math commands defs %%%%%

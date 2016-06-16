@@ -1,0 +1,15 @@
+\documentclass{amsart}
+\usepackage{amsmath, amssymb, latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[intlimits,sumlimits,noDcommand,narrowiints]{kpfonts}
+
+\usepackage[geom,slash,miscops,norm,pde,sets]{www_math_commands}
+\usepackage[noocg]{www_helper_commands}
+
+
+\begin{document}
+\thispagestyle{empty}
+
+\[ \mathfrak{T} = \jb{t}^{2-d}\]
+
+\end{document}

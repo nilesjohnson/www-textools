@@ -1,0 +1,40 @@
+\documentclass[noocg]{wwwnotes2}  
+%noocg by default. On Laptop ocgx is not installed?
+\usepackage[geom,slash,sets,norm,errorterm,pde,miscops,labeled,conv,roman]{www_math_commands}
+
+
+%%% In the code below author is not the same as the person making the
+%%% committ; see http://git-scm.com/docs/git-commit option --author
+%%% for more information
+\begingroup
+\catcode`\%=12
+\catcode`\$=12
+\gdef\gitShortHash{$Format:%h %d$}
+\gdef\gitAuthorName{$Format:%aN$}
+\gdef\gitAuthorEmail{$Format:%aE$}
+\gdef\gitAuthorDate{$Format:%ai$}
+\gdef\gitRefNames{$Format:%d$}
+\gdef\GitPageFooter{$Format: v:\texttt{%h}; last edit: %aN on %ai.$}
+\endgroup
+
+
+\title{Title}
+\subtitle{Lecture Notes Given for XXXYYY}
+\author{Willie Wai-Yeung Wong}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+test
+\end{abstract}
+
+\tableofcontents
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{part}{Bibliography}
+\bibliographystyle{amsalpha}
+\bibliography{mixmaster}
+\end{document}

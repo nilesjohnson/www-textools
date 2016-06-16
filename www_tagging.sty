@@ -1,0 +1,54 @@
+% www_tagging.sty
+% This package derives much inspiration from Brent Longborough's
+% tagging package; the main difference is that key matching admits
+% both ands and ors. 
+\ProvidesPackage{www_tagging}
+\RequirePackage{etoolbox,newfile}
+
+\newoutputstream{taglist}
+\openoutputfile{\jobname-taglist.tgs}{taglist}
+
+
+% Usage: \usetagcombos{ tag1+tag2+tag3, tag4+tag5, tag6}
+% This command takes a comma-separated list of tag combos, each combo
+% is a collection of tags separated by the plus sign `+'. Each combo
+% is a matching condition for the tags. Tagged blocks will be printed
+% if at least one of the combos match in its entirety. In other words,
+% the command above searches for those blocks whose tags include "tag1
+% and tag2 and tag3" or "tag4 and tag5" or "tag6". It may be called
+% multiple times building a long list of combos.   
+\newcommand*\usetagcombos[1]{%
+	\forcsvlist{\listadd\tagcombolist@master}{#1}}
+
+
+%%%%  arg1: csname of list ; arg2: item
+\newcommand*\reverselisttest[2]{%
+	\ifinlistcs{#2}{#1}{}{\csundef{@tagged@flag}{}}}
+%%%%  arg1: sublist csname ; arg2: list csname
+%%%%  arg3: if    ; arg4: else
+\newcommand*\ifsublistcs[4]{%
+	\csdef{@tagged@flag}{}%
+	\forlistcsloop{\reverselisttest{#2}}{#1}%
+	\ifcsname @tagged@flag\endcsname%
+		#3%
+	\else%
+		#4%
+	\fi}
+
+\DeclareListParser*{\forpluslist}{+}
+
+\newcommand*\andor@listparse[2]{%
+	\undef\localandtag%
+	\forpluslist{\listadd\localandtag}{#2}%
+	\ifsublistcs{localandtag}{#1}{\csdef{@tagged@used}{}}{}}
+
+\newenvironment{taggedblock}[1]{%
+	\csundef{@tagged@used}{}%
+	\forcsvlist{\addtostream{taglist}}{#1}%
+	\forcsvlist{\listadd\thisblocktags}{#1}%
+	\forlistcsloop{\andor@listparse{thisblocktags}}{tagcombolist@master}%
+	\ifcsname @tagged@used\endcsname%
+		\let\comment\relax%
+		\let\endcomment\relax%
+	\fi\comment}{\endcomment}
+	

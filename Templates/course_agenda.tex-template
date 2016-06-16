@@ -1,0 +1,25 @@
+\documentclass[noocg]{wwwcourseagenda}
+\course{coursetitle}
+\semester{semester and year}
+\coursenumber{course number}{school name}
+\author{Willie WY Wong}
+
+%%% In the code below author is not the same as the person making the
+%%% committ; see http://git-scm.com/docs/git-commit option --author
+%%% for more information
+\begingroup
+\catcode`\%=12
+\catcode`\$=12
+\gdef\gitShortHash{$Format:%h$}
+\gdef\gitAuthorName{$Format:%aN$}
+\gdef\gitAuthorEmail{$Format:%aE$}
+\gdef\gitAuthorDate{$Format:%ai$}
+\gdef\gitRefNames{$Format:%d$}
+\gdef\GitPageFooter{$Format: v:\texttt{%h}; last edit: %aN on %ai.$}
+\endgroup
+
+\begin{document}
+\maketitle
+
+\newday{2015.09.02}
+\end{document}

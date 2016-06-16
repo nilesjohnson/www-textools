@@ -1,0 +1,43 @@
+\documentclass[amssymb,amsfonts]{amsart}
+\usepackage{amssymb, latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[intlimits,sumlimits,noDcommand,narrowiints]{kpfonts}
+\usepackage{microtype}
+\usepackage{showkeys}
+\usepackage{paralist}
+\usepackage{ifthen}
+\usepackage{comment}
+\usepackage{svn}
+\usepackage{hyperref}
+
+
+\theoremstyle{plain}
+\newtheorem{problem}{Problem}
+
+\specialcomment{solution}{\noindent \textit{Solution:}\ \ }{}
+%\excoldecommend{solution}
+
+
+%%% In the code below author is not the same as the person making the
+%%% committ; see http://git-scm.com/docs/git-commit option --author
+%%% for more information
+\begingroup
+\catcode`\%=12
+\catcode`\$=12
+\gdef\gitAuthorEmail{$Format:%aE$}
+\gdef\GitPageFooter{$Format: v:\texttt{%h %d}; last edit: %aN on %ai.$}
+\endgroup
+
+\input{common_commands}
+
+\begin{document}
+\title{Exam on ???}
+%\author[W. W.-Y. Wong]{Willie Wai-Yeung Wong}
+\address{Institution}
+\thanks{\GitPageFooter}
+%\email{willie.wong@epfl.ch}
+
+\maketitle
+%\tableofcontents
+
+\end{document}
