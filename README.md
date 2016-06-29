@@ -8,7 +8,7 @@ I provide some pre-configured TeX templates (`.tex-template`).
 
 To include the git version information in your document please see the section on Publishing below. 
 
-## Publishing
+## Publishing with Git Version Info
 
 While working on the project, you probably don't need to worry about
 versioning information: you can keep track of it using Git. But when
@@ -18,7 +18,10 @@ questions.
 
 I am assuming you are using the work-flow where each "publication" lives in its own git repo. 
 
-To do so make sure the `.gitattributes` file is downloaded from here. Alternatively edit your local one to include the line `*.tex export-subst`. 
+To do so make sure that in your `.gitattributes` file, export subst is enabled for the file `git-version-info.tex`. E.g.  
+`git-version-info.tex export-subst`  
+Copy the template file `git-version-info.tex-template` to your folder as `git-version-info.tex` and edit it as you wish. 
+In the preamble of your main file, make sure to `\input{git-version-info}`. 
 
 Instead of directly posting files from the project to arXiv, use `git
 archive`. 
@@ -39,3 +42,9 @@ The advantage of building a git archive is that via `.gitattributes`,
 `export-subst` is enabled for `.tex` files. If you use this in
 conjunction with many of the included tex template files, this will give you
 versioning information in the footer of the generated PDFs.
+
+## Copyright
+
+A few of the files in this repo are from third parties (notably `ocg-p.sty` and `ocgx.sty`); those are distributed under the license specified in the source-code. 
+
+Everything else is released in the public domain. 
