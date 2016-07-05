@@ -14,16 +14,15 @@
 %%%%    thm, prop, lem, cor, conj, defn, conv, rmk, exa, quest, proof, ans
 %%%%  Extended referencing commands:
 %%%%    \ref, \eqref, \thref
+%%%%  One should only use \chapter and \section, and optionally \part for 
+%%%%    sectioning. Don't use \subsection! That's too many levels down, as 
+%%%%    Tufte would say. 
 %%%%
 
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{wwwnotes2}
 	[2016/01/20 v0.6 Willie Wai Yeung Wong Notes class]
-
-\DeclareOption{noocg}{\PassOptionsToPackage{\CurrentOption}{www_helper_commands}
-             \typeout{OCG support turned off}}
-\ProcessOptions\relax
 
 \LoadClass[11pt,titlepage,leqno,openright]{report}
 
@@ -34,7 +33,8 @@
 
 \RequirePackage{geometry}
 \RequirePackage[pagestyles]{titlesec}
-\RequirePackage[titles]{tocloft} %have not explored this one yet
+\RequirePackage{emarks}
+\RequirePackage{marginnote}
 \RequirePackage{titling}
 
 \RequirePackage{enumitem}
@@ -54,11 +54,10 @@
 \RequirePackage{mathtools}
 \RequirePackage[ntheorem]{empheq}
 
-\RequirePackage[notcite,notref]{showkeys}
 \RequirePackage[colorlinks=false]{hyperref}
 
 %% Geometry (geometry)
-\geometry{papersize={7.4in,9.5in},scale=0.7,bindingoffset=0.2in,twoside,hmarginratio={1:1},vmarginratio={3:4},headheight=14pt,headsep=0.2in,footskip=0.5in}
+\geometry{papersize={7.4in,9.5in},scale=0.65,bindingoffset=0.2in,twoside,hmarginratio={1:2},vmarginratio={3:4},headheight=14pt,headsep=0.2in,footskip=0.5in}
 
 %% Git backup (gracefully degrades if user doesn't use Git)
 \newcommand*\gitShortHash{(git not used)}
@@ -75,23 +74,34 @@
 \preauthor{\begin{flushright}\LARGE}
 \postauthor{\par\end{flushright}%
 	\hypersetup{pdfauthor={\theauthor},pdftitle={\thetitle},%
-	pdfsubject={Mathematical Research}}%
+	pdfsubject={Mathematics}}%
 	\vskip 1.5in}
 \predate{\begin{center}\footnotesize Revision based on commit \texttt{\gitShortHash{}} as of }
 \postdate{\par\end{center}}
 \setlength{\droptitle}{0.5in}
 
-%% Headers and Footers (titlesec)
-\widenhead*{0.2em}{0.5em}
+%% Headers and Footers (titlesec,emarks)
+\widenhead*{0.1in}{0.45in}
+\newcommand*\www@show@marks{%
+	\ifmarksequal{\topmarks}{\botmarks}{www@stuff@mark}{(\thefirstmarks{www@stuff@mark} cont'd)}{%
+	\ifmarksequal{\firstmarks}{\botmarks}{www@stuff@mark}{Ref. \thefirstmarks{www@stuff@mark}}{%
+	Refs. \thefirstmarks{www@stuff@mark}--\thebotmarks{www@stuff@mark}}}}
 \newpagestyle{wwwfancy}{\headrule%
-	\setmarks{chapter}{section}%
-	\sethead[\footnotesize\slshape\ifthesection{\thesection.\ \sectiontitle}{}]%
+	\setmarks{chapter}{section}
+	\sethead[\footnotesize\slshape\www@show@marks]%
 		[][\footnotesize\slshape\thetitletext]%
 		{\footnotesize\slshape\ifthechapter{\chaptertitlename\ %
 		\thechapter.\ \chaptertitle}{}}{}%
-		{\footnotesize\slshape\ifthesection{\thesection.\ \sectiontitle}{}}%
+		{\footnotesize\slshape\www@show@marks}%
 	\setfoot[][\thepage][]{}{\thepage}{\tiny \GitPageFooter}}
 \pagestyle{wwwfancy}
+
+%Redefine refstepcounter to throw things into the marks
+\let\www@old@refstepcounter\refstepcounter
+\def\refstepcounter#1{%
+	\www@old@refstepcounter{#1}%
+	\ifthenelse{\equal{#1}{equation}}{\marksthecs{www@stuff@mark}{theequation}}{}}
+
 
 % To make the clear page completely empty, with no header or footer
 \makeatletter
@@ -108,7 +118,7 @@
 \makeatother
 
 %% Section/Chapter titles (titlesec)
-\setcounter{secnumdepth}{2}
+\setcounter{secnumdepth}{0}
 \setcounter{tocdepth}{1}
 \titleformat{\part}[display]{\bfseries\huge}%
 	{\filcenter\partname\ \thepart}{0.4in}%
@@ -117,18 +127,13 @@
 	{\filleft\chaptertitlename\ {\huge\thechapter}}%
 	{1ex}{\titlerule\vspace{2ex}\filcenter\Huge}%
 	[\vspace{1ex}\titlerule]
-\titleformat{\section}{\bfseries\Large}{\S\thesection}{.5em}{}
-\titleformat{\subsection}[runin]{\normalfont\bfseries}%
-	{\thesubsection.}{0.5em}{}[.---]
-\titleformat{\subsubsection}[runin]{\normalfont\slshape}%
-	{}{}{}[.---]
-% TODO: titleformat for par, and subpar
+\titleformat{\section}{\bfseries\Large}{}{}{}
 %%%%% End basic set-up  %%%%%
 
 %%%%% Theorem like environments (ntheorem (modified)) %%%%%
-\numberwithin{equation}{section}
+\numberwithin{equation}{chapter}
 
-\theoremstyle{break}
+\theoremstyle{marginbreak}
 \theoremheaderfont{\normalfont\bfseries}
 \theorembodyfont{\itshape}
 \theoremseparator{}
@@ -143,7 +148,7 @@
 \newtheorem{conj}[equation]{Conjecture}
 
 
-\theoremstyle{plain}
+\theoremstyle{margin}
 \theoremseparator{:}
 
 \newtheorem{quest}[equation]{Question}
@@ -166,6 +171,3 @@
 \newtheorem{proof}{Proof}
 %%%%% End Theorem like environments %%%%%
 
-%%%%% Load custom commands %%%%%
-\RequirePackage{www_helper_commands}
-%%%%% End custom commands %%%%%
