@@ -2,17 +2,6 @@
 %noocg by default. On Laptop ocgx is not installed?
 %\usepackage[geom,slash,sets,norm,errorterm,pde,miscops,labeled,conv,roman]{www_math_commands}
 
-\makeatletter
-\newcommand\labelput[2]{%
-        \label{#1}%
-        \global\@namedef{wwy@label@store@content@#1}{#2}%
-        #2}
-\newcommand*\labelget[1]{\@nameuse{wwy@label@store@content@#1}}
-
-\@ifpackageloaded{hyperref}{\newcommand*\labelreuse[1]{\ref*{#1}}}{\newcommand\labelreuse[1]{\ref{#1}}}
-\makeatother
-
-
 \usepackage{lipsum}
 
 \title{Title}
@@ -29,23 +18,22 @@
 
 \lipsum[1-2]
 
-Test \marginnote{Something}
 
 \begin{equation}
 	A = B
 \end{equation}
 
-\begin{thm}\labelput{thm1}{This is a nonsense theorem}
+\begin{thm}\desclabel{thm1}{This is a nonsense theorem. Let's make the description longer to see what we can see. Let us make it longer to see if we can see other interesting things about it.}
 	\lipsum[27]
 
 	test
 \end{thm}
 
-\lipsum[1-3]
+\lipsum[1]
 
 \begin{pfof}{thm1}
 THis is how it goes.
-\begin{paras}[Step 1]\label{parastep}
+\begin{paras}[Step 1]\desclabel{parastep}{Here is another nonsense stuff. This is supposed to be the first step to proving. But who knows what this is actually saying.}
 	\lipsum[9-10]
 
 	And this is sufficient.
@@ -56,7 +44,7 @@ Here ends the proof.
 Let's refer to \thref{parastep}
 
 \begin{paras}
-	\lipsum[2-3]
+	\lipsum[2]
 
 	Something
 \end{paras}
@@ -73,7 +61,7 @@ Let's refer to \thref{parastep}
 
 \section{A section}
 
-Before doing anything else, let us recall \thref{thm1}, which is a theorem about ``\labelget{thm1}''.
+Before doing anything else, let us recall \descthref{thm1}. Also let's try \descthref{parastep}.
 
 \lipsum[2]
 

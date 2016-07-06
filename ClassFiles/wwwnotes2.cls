@@ -34,17 +34,14 @@
 \RequirePackage{geometry}
 \RequirePackage[pagestyles]{titlesec}
 \RequirePackage{emarks}
-\RequirePackage{marginnote}
+\RequirePackage{marginfix}
 \RequirePackage{titling}
 
 \RequirePackage{enumitem}
-%\RequirePackage{paralist}  %Read the manual? Seems to break standard list envs
 \RequirePackage{index}
 \RequirePackage{url}
-\RequirePackage{cite}
+\RequirePackage[backend=biber,style=authortitle,maxnames=10]{biblatex}
 
-%%I do not think I need this one
-%% \RequirePackage{multicol}
 
 \RequirePackage[oldstylenums,narrowiints,intlimits,sumlimits,noDcommand]{kpfonts}
 \RequirePackage[protrusion,babel]{microtype}
@@ -57,7 +54,7 @@
 \RequirePackage[colorlinks=false]{hyperref}
 
 %% Geometry (geometry)
-\geometry{papersize={7.4in,9.5in},scale=0.63,bindingoffset=0.2in,twoside,hmarginratio={2:5},vmarginratio={3:4},headheight=14pt,headsep=0.2in,footskip=0.5in}
+\geometry{papersize={7.4in,9.5in},includemp=true,marginparwidth=1.3in,width=6.1in,bindingoffset=0.2in,twoside,hmarginratio={2:1},vmarginratio={3:4},headheight=14pt,headsep=0.2in,footskip=0.5in}
 
 %% Git backup (gracefully degrades if user doesn't use Git)
 \newcommand*\gitShortHash{(git not used)}
@@ -103,9 +100,7 @@
 
 
 % To make the clear page completely empty, with no header or footer
-\makeatletter
-\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
-	\hbox{}
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else\hbox{}
 	%\vspace*{\fill}
 	%\begin{center}
 	%   This page intentially blank.
@@ -114,7 +109,6 @@
 	\thispagestyle{empty}
 	\newpage
 	\if@twocolumn\hbox{}\newpage\fi\fi\fi}
-\makeatother
 
 %% Section/Chapter titles (titlesec)
 \setcounter{secnumdepth}{0}
@@ -172,14 +166,33 @@
 	{\end{proof}}
 
 \newtheoremstyle{wwwnumberonly}%
-  {\item[\normalfont\bfseries\hskip\labelsep ##2]}%
-  {\item[\normalfont\bfseries\hskip\labelsep ##2 (##3)]}
+  {\item[\theorem@headerfont\bfseries\hskip\labelsep ##2]}%
+  {\item[\theorem@headerfont\bfseries\hskip\labelsep ##2 (##3)]}
 \theoremstyle{wwwnumberonly}
+\theoremheaderfont{\normalfont\bfseries}
 \theoremsymbol{\P}
 \theorempreskip\parsep
 \theorempostskip\parsep
 
-\newtheorem{paras}[equation]{Paragraphs}
-
+\newtheorem{paras}[equation]{Paragraph}
 %%%%% End Theorem like environments %%%%%
+
+%%%%% Margin Notes and Descriptive Labelling (marginfix) %%%%%
+\newcommand*\marginfont{\footnotesize\itshape}
+\setlength\marginparpush{12pt}
+\newcommand{\marginnote}[1]{%
+	\marginpar[\raggedleft\marginfont #1]{\raggedright\marginfont #1}}
+\newcommand\desclabel[2]{%
+	\label{#1}%
+	\global\@namedef{www@label@store@description@#1}{#2}}
+\newcommand*\showdesc[1]{%
+	\ifcsname www@label@store@description@#1\endcsname
+	   \marginnote{Ref.\ \ref*{#1}: ``\@nameuse{www@label@store@description@#1}''}%
+	\else
+	   \ClassWarning{wwwnotes2}{Label #1 has no description, margindesc suppressed}%
+   	\fi}
+\newcommand*\descthref[1]{\thref{#1}\showdesc{#1}}
+\newcommand*\desceqref[1]{\eqref{#1}\showdesc{#1}}
+\newcommand*\descref[1]{\ref{#1}\showdesc{#1}}
+%%%%% End Margin Notes and Descriptive Labelling %%%%%
 

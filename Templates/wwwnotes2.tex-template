@@ -1,6 +1,4 @@
 \documentclass{wwwnotes2} 
-\usepackage[noocg]{www_helper_commands} 
-%noocg by default. On Laptop ocgx is not installed?
 \usepackage[geom,slash,sets,norm,errorterm,pde,miscops,labeled,conv,roman]{www_math_commands}
 
 
@@ -19,6 +17,8 @@
 \endgroup
 
 
+\addbibresource{mixmaster.bib}
+
 \title{Title}
 \subtitle{Lecture Notes Given for XXXYYY}
 \author{Willie Wai-Yeung Wong}
@@ -30,8 +30,9 @@
 \tableofcontents
 
 \cleardoublepage
-\phantomsection
-\addcontentsline{toc}{part}{Bibliography}
-\bibliographystyle{amsalpha}
-\bibliography{mixmaster}
+%\phantomsection
+%\addcontentsline{toc}{chapter}{Bibliography}
+
+\printbibliography
+
 \end{document}
