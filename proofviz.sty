@@ -1,0 +1,14 @@
+% proofviz.sty
+% This package provides functionality to create visualizations of proofs. 
+\ProvidesPackage{proofviz}
+\RequirePackage{etoolbox,newfile}
+
+\newoutputstream{xreflist}
+\openoutputfile{\jobname-xref.lst}{xreflist}
+
+\newenvironment{proofof}[1]{%
+  \def\@vproof@ref@anchor{#1}%
+  \addtostream{xreflist}{#1 refers to:}%
+  \begin{proof}}{\end{proof}}
+
+\newcommand*\vref[2]

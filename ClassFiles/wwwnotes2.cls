@@ -24,7 +24,7 @@
 \ProvidesClass{wwwnotes2}
 	[2016/01/20 v0.6 Willie Wai Yeung Wong Notes class]
 
-\LoadClass[11pt,titlepage,leqno,openright,twoside]{report}
+\LoadClass[10pt,titlepage,leqno,openright,twoside]{report}
 
 \RequirePackage[T1]{fontenc}
 \RequirePackage[english]{babel}
@@ -57,7 +57,7 @@
 \RequirePackage[colorlinks=false]{hyperref}
 
 %% Geometry (geometry)
-\geometry{papersize={7.4in,9.5in},scale=0.65,bindingoffset=0.2in,twoside,hmarginratio={1:2},vmarginratio={3:4},headheight=14pt,headsep=0.2in,footskip=0.5in}
+\geometry{papersize={7.4in,9.5in},scale=0.63,bindingoffset=0.2in,twoside,hmarginratio={2:5},vmarginratio={3:4},headheight=14pt,headsep=0.2in,footskip=0.5in}
 
 %% Git backup (gracefully degrades if user doesn't use Git)
 \newcommand*\gitShortHash{(git not used)}
@@ -91,7 +91,7 @@
 		[][\footnotesize\slshape\thetitletext]%
 		{\footnotesize\slshape\thesubtitle}{}%
 		{\footnotesize\slshape\www@show@marks}%
-	\setfoot[\tiny \theauthor][\thepage][]{}{\thepage}{\tiny \GitPageFooter}}
+	\setfoot[\tiny \copyright\theauthor][\thepage][]{}{\thepage}{\tiny \GitPageFooter}}
 \pagestyle{wwwfancy}
 
 %Redefine refstepcounter to throw things into the marks

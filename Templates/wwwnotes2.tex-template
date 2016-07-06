@@ -1,4 +1,5 @@
-\documentclass[noocg]{wwwnotes2}  
+\documentclass{wwwnotes2} 
+\usepackage[noocg]{www_helper_commands} 
 %noocg by default. On Laptop ocgx is not installed?
 \usepackage[geom,slash,sets,norm,errorterm,pde,miscops,labeled,conv,roman]{www_math_commands}
 
@@ -25,10 +26,6 @@
 \begin{document}
 
 \maketitle
-
-\begin{abstract}
-test
-\end{abstract}
 
 \tableofcontents
 

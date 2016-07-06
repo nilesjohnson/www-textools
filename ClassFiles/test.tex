@@ -2,6 +2,17 @@
 %noocg by default. On Laptop ocgx is not installed?
 %\usepackage[geom,slash,sets,norm,errorterm,pde,miscops,labeled,conv,roman]{www_math_commands}
 
+\makeatletter
+\newcommand\labelput[2]{%
+        \label{#1}%
+        \global\@namedef{wwy@label@store@content@#1}{#2}%
+        #2}
+\newcommand*\labelget[1]{\@nameuse{wwy@label@store@content@#1}}
+
+\@ifpackageloaded{hyperref}{\newcommand*\labelreuse[1]{\ref*{#1}}}{\newcommand\labelreuse[1]{\ref{#1}}}
+\makeatother
+
+
 \usepackage{lipsum}
 
 \title{Title}
@@ -24,7 +35,7 @@ Test \marginnote{Something}
 	A = B
 \end{equation}
 
-\begin{thm}\label{thm1}
+\begin{thm}\labelput{thm1}{This is a nonsense theorem}
 	\lipsum[27]
 
 	test
@@ -61,6 +72,9 @@ Let's refer to \thref{parastep}
 \end{equation}
 
 \section{A section}
+
+Before doing anything else, let us recall \thref{thm1}, which is a theorem about ``\labelget{thm1}''.
+
 \lipsum[2]
 
 \begin{equation}
