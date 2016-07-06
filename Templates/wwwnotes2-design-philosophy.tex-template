@@ -1,3 +1,35 @@
 \section{Design philosophy and \TeX{}nical details}
 
-The present document is prepared and typeset using \LaTeXe. The document class used is a custom class called \texttt{wwwnotes2} built over the standard \texttt{report} class; you can find the source code at the Git repository \url{https://gitlab.msu.edu/wongwil2/www-textools}.  
+The present document is prepared and typeset using \LaTeXe. The document class used is a custom class called \texttt{wwwnotes2} built over the standard \texttt{report} class; you can find the source code at the Git repository \url{https://gitlab.msu.edu/wongwil2/www-textools}. The font used is from the Johannes Kepler project, accessible as the package \texttt{kpfonts} on CTAN. 
+
+The layout of the pages is heavily inspired by the works of Edward Tufte. In particular are the use of a wide margin and side notes instead of footnotes, the limit to \emph{two} levels of topic headings (Chapter and Section in this document), and the citable ``thought units'' (in this document paragraphs delimited by a number at the start and the symbol \P\ at the end). The following paragraphs contain some tips on how to effectively use this document. 
+
+\begin{thot}[Cross referencing]\desclabel{preface:thot:xref}{Concerning cross references} 
+Every item that can be cross-referenced (such as this one) is labelled \texttt{chapter\#.item\#}.  
+The item number increases monotonically throughout the chapter. At the top of every page you can find, similar to what appears in dictionaries, a numeric range; this is designed to help you locate antecedents of references.  
+The notation ``(Prev. ref. \#)'' indicates that there are no new items defined on the current page, and the \# shows the most recently defined item number.  
+ 
+The items that can be cross-referenced are: equations, theorem-like assertions, conjecture-like queries, and thoughts (such as this one).  
+Occasionally the references are found together with a note reminding you what the antecedent is. For example, \descthref{preface:thot:xref} refers to this very item.  
+And on the right you will see a short description of the reference.  
+ 
+The items that can be cross-referenced all have fixed scope; that is, they have a beginning and an ending.    
+The equations are easy to identify. For the other three types, they all begin with the item number and end with a `mark'. For  
+``assertions'' \marginnote{``Assertions'' refer to definite statements such as Theorems or Definitions which may or may not be justified. ``queries'' refer to tentative statements such as Conjectures, and ``thoughts'' refer to a block of text, potentially consisting of several paragraphs, following a coherent idea.} 
+the mark is `\(\blacksquare\)'. For ``queries'' the mark is `\(\diamondsuit\)'. And for ``thoughts'' the mark is `\P'. Since this is a mathematical text, there are also ``proofs'', whose ends are denoted by `\(\square\)`.  
+\end{thot}
+
+
+\begin{thot}[Margin notes]
+This document makes extensive use of margin notes. The guiding principle of margin notes is that they provide helpful, but optional annotation to the running text. In particular, their removal should not be detrimental to the understanding of the text proper. 
+Therefore, there will not be any footnote in the traditional sense (where the flow of reading is interrupted by the appearance of a superscript, with the reader compelled to certain distraction by tangential remarks); if something is important enough to grab the attention of the
+reader, it should appear in the text proper. 
+Marginalia will largely comprise historical and tangential remarks, as well as suggestions for further reading. (In addition to the aide to deciphering cross references described in \descthref{preface:thot:xref}.)  The reader should feel free to ignore them all.
+Additionally, the author hopes that active readers of mathematical treatises may find beneficial the ample margins. 
+\end{thot}
+
+\begin{thot}[Citations]
+Since these are lecture notes, in-line citations will not be given. Suggestions for further reading, as well as discussion of the history of
+ progression of a particular result, can all be found in the margin notes insofar as they appear. The list of further readings are also coll
+ected at the end of this document. 
+\end{thot}

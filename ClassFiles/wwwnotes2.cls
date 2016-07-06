@@ -40,7 +40,7 @@
 \RequirePackage{enumitem}
 \RequirePackage{index}
 \RequirePackage{url}
-\RequirePackage[backend=biber,style=authortitle,maxnames=10]{biblatex}
+\RequirePackage[backend=biber,style=reading,maxnames=10]{biblatex}
 
 
 \RequirePackage[oldstylenums,narrowiints,intlimits,sumlimits,noDcommand]{kpfonts}
@@ -88,7 +88,7 @@
 		[][\footnotesize\slshape\thetitletext]%
 		{\footnotesize\slshape\thesubtitle}{}%
 		{\footnotesize\slshape\www@show@marks}%
-	\setfoot[\tiny \copyright\theauthor][\thepage][]{}{\thepage}{\tiny \GitPageFooter}}
+	\setfoot[\tiny \copyright~\theauthor][\thepage][]{}{\thepage}{\tiny \GitPageFooter}}
 \pagestyle{wwwfancy}
 
 %Redefine refstepcounter to throw things into the marks
@@ -174,7 +174,7 @@
 \theorempreskip\parsep
 \theorempostskip\parsep
 
-\newtheorem{paras}[equation]{Paragraph}
+\newtheorem{thot}[equation]{Thought}
 %%%%% End Theorem like environments %%%%%
 
 %%%%% Margin Notes and Descriptive Labelling (marginfix) %%%%%
