@@ -54,7 +54,7 @@
 \RequirePackage[colorlinks=false]{hyperref}
 
 %% Geometry (geometry)
-\geometry{papersize={7.4in,9.5in},includemp=true,marginparwidth=1.3in,width=6.1in,bindingoffset=0.2in,twoside,hmarginratio={2:1},vmarginratio={3:4},headheight=14pt,headsep=0.2in,footskip=0.5in}
+\geometry{papersize={7.4in,9.5in},includemp=true,marginparwidth=1.44in,width=6.1in,bindingoffset=0.2in,twoside,hmarginratio={2:1},vmarginratio={3:4},headheight=14pt,headsep=0.2in,footskip=0.5in}
 
 %% Git backup (gracefully degrades if user doesn't use Git)
 \newcommand*\gitShortHash{(git not used)}
