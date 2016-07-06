@@ -24,7 +24,7 @@
 \ProvidesClass{wwwnotes2}
 	[2016/01/20 v0.6 Willie Wai Yeung Wong Notes class]
 
-\LoadClass[11pt,titlepage,leqno,openright]{report}
+\LoadClass[11pt,titlepage,leqno,openright,twoside]{report}
 
 \RequirePackage[T1]{fontenc}
 \RequirePackage[english]{babel}
@@ -83,24 +83,23 @@
 %% Headers and Footers (titlesec,emarks)
 \widenhead*{0.1in}{0.45in}
 \newcommand*\www@show@marks{%
-	\ifmarksequal{\topmarks}{\botmarks}{www@stuff@mark}{(\thefirstmarks{www@stuff@mark} cont'd)}{%
+	\ifmarksequal{\topmarks}{\botmarks}{www@stuff@mark}{(Prev. ref. \thefirstmarks{www@stuff@mark})}{%
 	\ifmarksequal{\firstmarks}{\botmarks}{www@stuff@mark}{Ref. \thefirstmarks{www@stuff@mark}}{%
 	Refs. \thefirstmarks{www@stuff@mark}--\thebotmarks{www@stuff@mark}}}}
 \newpagestyle{wwwfancy}{\headrule%
-	\setmarks{chapter}{section}
 	\sethead[\footnotesize\slshape\www@show@marks]%
 		[][\footnotesize\slshape\thetitletext]%
-		{\footnotesize\slshape\ifthechapter{\chaptertitlename\ %
-		\thechapter.\ \chaptertitle}{}}{}%
+		{\footnotesize\slshape\thesubtitle}{}%
 		{\footnotesize\slshape\www@show@marks}%
-	\setfoot[][\thepage][]{}{\thepage}{\tiny \GitPageFooter}}
+	\setfoot[\tiny \theauthor][\thepage][]{}{\thepage}{\tiny \GitPageFooter}}
 \pagestyle{wwwfancy}
 
 %Redefine refstepcounter to throw things into the marks
 \let\www@old@refstepcounter\refstepcounter
 \def\refstepcounter#1{%
 	\www@old@refstepcounter{#1}%
-	\ifthenelse{\equal{#1}{equation}}{\marksthecs{www@stuff@mark}{theequation}}{}}
+	\ifthenelse{\equal{#1}{equation}}{\marksthecs{www@stuff@mark}{theequation}}{}%
+	\ifthenelse{\equal{#1}{chapter}}{\marksthecs{www@stuff@mark}{theequation}}{}}
 
 
 % To make the clear page completely empty, with no header or footer
@@ -133,41 +132,54 @@
 %%%%% Theorem like environments (ntheorem (modified)) %%%%%
 \numberwithin{equation}{chapter}
 
-\theoremstyle{marginbreak}
-\theoremheaderfont{\normalfont\bfseries}
-\theorembodyfont{\itshape}
+\theoremstyle{changebreak}
+\theoremheaderfont{\normalfont\scshape\bfseries}
+\theorembodyfont{\upshape}
 \theoremseparator{}
 \theoremindent0cm
 \theoremnumbering{arabic}
-\theoremsymbol{\ensuremath{_\blacksquare}}
+\theoremsymbol{\ensuremath{\blacksquare}}
 
 \newtheorem{thm}[equation]{Theorem}
 \newtheorem{prop}[equation]{Proposition}
 \newtheorem{lem}[equation]{Lemma}
 \newtheorem{cor}[equation]{Corollary}
-\newtheorem{conj}[equation]{Conjecture}
-
-
-\theoremstyle{margin}
-\theoremseparator{:}
-
-\newtheorem{quest}[equation]{Question}
-
-\theorembodyfont{\upshape}
-
 \newtheorem{defn}[equation]{Definition}
 \newtheorem{conv}[equation]{Convention}
 
+\theorembodyfont{\itshape}
+\theoremsymbol{\ensuremath{\diamondsuit}}
+
+\newtheorem{quest}[equation]{Open Question}
+\newtheorem{conj}[equation]{Conjecture}
+
 \theoremheaderfont{\normalfont\itshape}
+\theorembodyfont{\upshape}
+\theoremsymbol{\ensuremath{\blacksquare}}
 
 \newtheorem{rmk}[equation]{Remark}
 \newtheorem{exa}[equation]{Example}
-\newtheorem{answer}[equation]{Answer}
+\newtheorem{exer}[equation]{Exercise}
 
 \theoremstyle{nonumberplain}
 \theoremheaderfont{\normalfont\scshape}
-\theoremsymbol{\ensuremath{_\Box}}
+\theoremsymbol{\ensuremath{\square}}
 
 \newtheorem{proof}{Proof}
+
+\newenvironment{pfof}[1]%
+	{\begin{proof}[\thref{#1}]}%
+	{\end{proof}}
+
+\newtheoremstyle{wwwnumberonly}%
+  {\item[\normalfont\bfseries\hskip\labelsep ##2]}%
+  {\item[\normalfont\bfseries\hskip\labelsep ##2 (##3)]}
+\theoremstyle{wwwnumberonly}
+\theoremsymbol{\P}
+\theorempreskip\parsep
+\theorempostskip\parsep
+
+\newtheorem{paras}[equation]{Paragraphs}
+
 %%%%% End Theorem like environments %%%%%
 

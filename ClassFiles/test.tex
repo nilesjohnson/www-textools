@@ -12,28 +12,48 @@
 
 \maketitle
 
-\begin{abstract}
-	\lipsum[3]
-\end{abstract}
-
 \tableofcontents
 
 \chapter{First chapter}
 
 \lipsum[1-2]
 
+Test \marginnote{Something}
+
 \begin{equation}
 	A = B
 \end{equation}
 
-\begin{thm}
+\begin{thm}\label{thm1}
 	\lipsum[27]
+
+	test
 \end{thm}
 
 \lipsum[1-3]
 
+\begin{pfof}{thm1}
+THis is how it goes.
+\begin{paras}[Step 1]\label{parastep}
+	\lipsum[9-10]
+
+	And this is sufficient.
+\end{paras}
+Here ends the proof.
+\end{pfof}
+
+Let's refer to \thref{parastep}
+
+\begin{paras}
+	\lipsum[2-3]
+
+	Something
+\end{paras}
+
 \begin{rmk}
 	\lipsum[27]
+
+	test
 \end{rmk}
 
 \begin{equation}
@@ -57,7 +77,16 @@
 
 \chapter{Second chapter}
 
-\lipsum[10-13]
+Test \theequation to see what number would show up.
+
+\lipsum[10-23]
+
+\begin{equation}
+K = \frac12 mv^2
+\end{equation}
+
+This is it.
+
 
 
 \cleardoublepage
