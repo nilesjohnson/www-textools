@@ -1,0 +1,3 @@
+\section{Design philosophy and \TeX{}nical details}
+
+The present document is prepared and typeset using \LaTeXe. The document class used is a custom class called \texttt{wwwnotes2} built over the standard \texttt{report} class; you can find the source code at the Git repository \url{https://gitlab.msu.edu/wongwil2/www-textools}.  
