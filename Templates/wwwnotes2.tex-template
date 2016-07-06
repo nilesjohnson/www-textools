@@ -27,12 +27,15 @@
 
 \maketitle
 
+%\chapter*{Preface}
+%\input{file on TeXnical stuff}
+
 \tableofcontents
 
-\cleardoublepage
-%\phantomsection
-%\addcontentsline{toc}{chapter}{Bibliography}
+%Add content here
 
-\printbibliography
+
+\cleardoublepage
+\printbibliography[heading=bibintoc]
 
 \end{document}

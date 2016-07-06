@@ -2,6 +2,8 @@
 %noocg by default. On Laptop ocgx is not installed?
 %\usepackage[geom,slash,sets,norm,errorterm,pde,miscops,labeled,conv,roman]{www_math_commands}
 
+\addbibresource{mixmaster.bib}
+
 \usepackage{lipsum}
 
 \title{Title}
@@ -15,7 +17,7 @@
 
 \chapter*{Preface}
 
-\section{Design philosophy and \TeX{}nical details}
+\section*{Design philosophy and \TeX{}nical details}
 
 The present document is prepared and typeset using \LaTeXe. The document class used is a custom class called \texttt{wwwnotes2} built over the standard \texttt{report} class; you can find the source code at the Git repository \url{https://gitlab.msu.edu/wongwil2/www-textools}. The font used is from the Johannes Kepler project, accessible as the package \texttt{kpfonts} on CTAN.    
  
@@ -108,6 +110,9 @@ Before doing anything else, let us recall \descthref{thm1}. Also let's try \desc
 
 \lipsum[5-9]
 
+Some text \cite{Wong2009}.
+
+
 \chapter{Second chapter}
 
 Test \theequation to see what number would show up.
@@ -120,5 +125,8 @@ K = \frac12 mv^2
 
 This is it.
 
+
+\cleardoublepage
+\printbibliography[heading=bibintoc]
 
 \end{document}
