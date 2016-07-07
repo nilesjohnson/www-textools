@@ -32,6 +32,7 @@
 
 \RequirePackage{geometry}
 \RequirePackage[pagestyles]{titlesec}
+\RequirePackage{everypage}
 \RequirePackage{etoolbox}
 \RequirePackage{newfile}
 \RequirePackage{emarks}
@@ -188,7 +189,7 @@
 \newoutputstream{Xrefvertices}
 \openoutputfile{\jobname-edges-xrf.csv}{Xrefedges}
 \openoutputfile{\jobname-vertices-xrf.csv}{Xrefvertices}
-\addtostream{Xrefedges}{referrer,target}
+\addtostream{Xrefedges}{source,target}
 \addtostream{Xrefvertices}{id,label,type,description}
 
 
@@ -204,11 +205,18 @@
 	\else
 		#3%
 	\fi}
-\newcommand*\showdesc[1]{\label@getdesc{#1}{\marginnote}{\ClassWarning{wwwnotes2}{Label #1 has no description}}{Ref.\ \ref*{#1}: ``}{''}}
+
+\gdef\@desc@refs@on@page{}
+\newcommand*\showdesc[1]{%
+	\ifinlist{#1}{\@desc@refs@on@page}{\ClassInfo{wwwnotes2}{Label #1 is already shown, suppressing second display}}{%	
+	\label@getdesc{#1}{\marginnote}{\ClassWarning{wwwnotes2}{Label #1 has no description}}{Ref.\ \ref*{#1}: ``}{''}%
+\listgadd{\@desc@refs@on@page}{#1}}}
+
 \newcommand*\descthref[1]{\thref{#1}\showdesc{#1}\writeref{#1}}
 \newcommand*\desceqref[1]{\eqref{#1}\showdesc{#1}\writeref{#1}}
 \newcommand*\descref[1]{\ref{#1}\showdesc{#1}\writeref{#1}}
 
 \newcommand*\writeref[1]{\ifdef\wwwnotes@pfofctr{\addtostream{Xrefedges}{\wwwnotes@pfofctr,#1}}{}}
+\AddEverypageHook{\gdef\@desc@refs@on@page{}}
 %%%%% End Margin Notes and Descriptive Labelling %%%%%
 
