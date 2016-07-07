@@ -9,7 +9,7 @@
 %%%%    \ref, \eqref, \thref
 %%%%  Descriptive labelling commands:
 %%%%    \desclabel, \descthref, \desceqref, \descref
-%%%%  Note, the descriptive labelling commands also writes to the *.xrf files 
+%%%%  Note, the descriptive labelling commands also writes to the *-xrf.csv files 
 %%%%    when used in conjunction with the pfof environments. This allows data
 %%%$    to be recorded for generating dependency trees between theorems. 
 %%%%  Margin note command:
@@ -186,8 +186,11 @@
 
 \newoutputstream{Xrefedges}
 \newoutputstream{Xrefvertices}
-\openoutputfile{\jobname-edges.xrf}{Xrefedges}
-\openoutputfile{\jobname-vertices.xrf}{Xrefvertices}
+\openoutputfile{\jobname-edges-xrf.csv}{Xrefedges}
+\openoutputfile{\jobname-vertices-xrf.csv}{Xrefvertices}
+\addtostream{Xrefedges}{source,target}
+\addtostream{Xrefvertices}{id,label,description}
+
 
 \newcommand\desclabel[2]{%
 	\label{#1}%
