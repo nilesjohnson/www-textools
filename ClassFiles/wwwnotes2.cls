@@ -1,23 +1,22 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  wwwnotes2 class by Willie W-Y Wong     
-%%%%  Usage: 
-%%%%    \documentclass{wwwnotes}
-%%%%    \title{<title>}
-%%%%    \subtitle{<subtitle>}
-%%%%    \author{<author>}
-%%%%    \begin{document}
-%%%%    \maketitle
-%%%%    ....
-%%%%    \end{document}
+%%%%  For usage see template file
 %%%%
 %%%%  Currently the style has predefined the following theorems:
-%%%%    thm, prop, lem, cor, conj, defn, conv, rmk, exa, quest, proof, ans
+%%%%    thm, prop, lem, cor, defn, conv, rmk, exa, exer,
+%%%%    conj, quest, proof, pfof, thot
 %%%%  Extended referencing commands:
 %%%%    \ref, \eqref, \thref
+%%%%  Descriptive labelling commands:
+%%%%    \desclabel, \descthref, \desceqref, \descref
+%%%%  Note, the descriptive labelling commands also writes to the *.xrf files 
+%%%%    when used in conjunction with the pfof environments. This allows data
+%%%$    to be recorded for generating dependency trees between theorems. 
+%%%%  Margin note command:
+%%%%    \marginnote
 %%%%  One should only use \chapter and \section, and optionally \part for 
 %%%%    sectioning. Don't use \subsection! That's too many levels down, as 
 %%%%    Tufte would say. 
-%%%%
 
 
 \NeedsTeXFormat{LaTeX2e}
@@ -33,6 +32,8 @@
 
 \RequirePackage{geometry}
 \RequirePackage[pagestyles]{titlesec}
+\RequirePackage{etoolbox}
+\RequirePackage{newfile}
 \RequirePackage{emarks}
 \RequirePackage{marginfix}
 \RequirePackage{titling}
@@ -162,7 +163,7 @@
 \newtheorem{proof}{Proof}
 
 \newenvironment{pfof}[1]%
-	{\begin{proof}[\thref{#1}]}%
+	{\def\wwwnotes@pfofctr{#1}\begin{proof}[\thref{#1}]}%
 	{\end{proof}}
 
 \newtheoremstyle{wwwnumberonly}%
@@ -182,17 +183,29 @@
 \setlength\marginparpush{12pt}
 \newcommand{\marginnote}[1]{%
 	\marginpar[\raggedleft\marginfont #1]{\raggedright\marginfont #1}}
+
+\newoutputstream{Xrefedges}
+\newoutputstream{Xrefvertices}
+\openoutputfile{\jobname-edges.xrf}{Xrefedges}
+\openoutputfile{\jobname-vertices.xrf}{Xrefvertices}
+
 \newcommand\desclabel[2]{%
 	\label{#1}%
-	\global\@namedef{www@label@store@description@#1}{#2}}
-\newcommand*\showdesc[1]{%
+	\global\@namedef{www@label@store@description@#1}{#2}%
+	\addtostream{Xrefvertices}{#1,"\@currentlabel","#2"}}
+% getdesc: 
+%  #1 -- label, #2 -- filter, #3 -- error, #4 -- pre, #5 -- post
+\newcommand\label@getdesc[5]{%
 	\ifcsname www@label@store@description@#1\endcsname
-	   \marginnote{Ref.\ \ref*{#1}: ``\@nameuse{www@label@store@description@#1}''}%
+		#2{#4\@nameuse{www@label@store@description@#1}#5}%
 	\else
-	   \ClassWarning{wwwnotes2}{Label #1 has no description, margindesc suppressed}%
-   	\fi}
-\newcommand*\descthref[1]{\thref{#1}\showdesc{#1}}
-\newcommand*\desceqref[1]{\eqref{#1}\showdesc{#1}}
-\newcommand*\descref[1]{\ref{#1}\showdesc{#1}}
+		#3%
+	\fi}
+\newcommand*\showdesc[1]{\label@getdesc{#1}{\marginnote}{\ClassWarning{wwwnotes2}{Label #1 has no description}}{Ref.\ \ref*{#1}: ``}{''}}
+\newcommand*\descthref[1]{\thref{#1}\showdesc{#1}\writeref{#1}}
+\newcommand*\desceqref[1]{\eqref{#1}\showdesc{#1}\writeref{#1}}
+\newcommand*\descref[1]{\ref{#1}\showdesc{#1}\writeref{#1}}
+
+\newcommand*\writeref[1]{\ifdef\wwwnotes@pfofctr{\addtostream{Xrefedges}{\wwwnotes@pfofctr,#1}}{}}
 %%%%% End Margin Notes and Descriptive Labelling %%%%%
 
