@@ -47,10 +47,10 @@
 \RequirePackage[oldstylenums,narrowiints,intlimits,sumlimits,noDcommand]{kpfonts}
 \RequirePackage[protrusion,babel]{microtype}
 
-\RequirePackage{amsmath}
-\RequirePackage[amsmath,thmmarks,thref,hyperref]{ntheorem}
+
 \RequirePackage{mathtools}
 \RequirePackage[ntheorem]{empheq}
+\RequirePackage[amsmath,thmmarks,thref,hyperref]{ntheorem}
 
 \RequirePackage[colorlinks=false]{hyperref}
 
@@ -188,14 +188,14 @@
 \newoutputstream{Xrefvertices}
 \openoutputfile{\jobname-edges-xrf.csv}{Xrefedges}
 \openoutputfile{\jobname-vertices-xrf.csv}{Xrefvertices}
-\addtostream{Xrefedges}{source,target}
-\addtostream{Xrefvertices}{id,label,description}
+\addtostream{Xrefedges}{referrer,target}
+\addtostream{Xrefvertices}{id,label,type,description}
 
 
 \newcommand\desclabel[2]{%
 	\label{#1}%
 	\global\@namedef{www@label@store@description@#1}{#2}%
-	\addtostream{Xrefvertices}{#1,"\@currentlabel","#2"}}
+	\addtostream{Xrefvertices}{#1,"\@currentlabel","\csname\InTheoType Keyword\endcsname","#2"}}
 % getdesc: 
 %  #1 -- label, #2 -- filter, #3 -- error, #4 -- pre, #5 -- post
 \newcommand\label@getdesc[5]{%
