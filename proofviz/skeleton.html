@@ -6,8 +6,21 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"> </script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    },
+    CommonHTML: {
+        minScaleAdjust: 100
+    }
+    });
+</script>       
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+</script>
 <style>
-
 path.link {
   fill: none;
   stroke: #666;
@@ -78,7 +91,6 @@ text {
 	font-size: small;
 	content: " ] ";
 }
-
 </style>
 </head>
 <body>
@@ -162,9 +174,12 @@ function searchThm() {
 function showInfo(name, page, description, label, type) {
 	document.getElementById('thmname').textContent = name;
 	document.getElementById('thmpnum').textContent = page;
-	document.getElementById('thmdesc').textContent = description;
 	document.getElementById('thmreflab').textContent = label;
 	document.getElementById('thmmark').style.color = color(type);
+
+	var descField = document.getElementById('thmdesc');
+	descField.textContent = description;
+	MathJax.Hub.Queue(["Typeset",MathJax.Hub,descField]);
 }
 
 // Now let us read the data. Remember that d3.csv reads asynchronously. So we force synchronicity by calling one load from the other. 
