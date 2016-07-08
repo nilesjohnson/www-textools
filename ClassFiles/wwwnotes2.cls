@@ -179,9 +179,9 @@
 \newtheorem{thot}[equation]{Thought}
 %%%%% End Theorem like environments %%%%%
 
-%%%%% Margin Notes and Descriptive Labelling (marginfix) %%%%%
+%%%%% Margin Notes and Descriptive Labelling (marginfix, everypage) %%%%%
 \newcommand*\marginfont{\footnotesize\itshape}
-\setlength\marginparpush{12pt}
+\setlength\marginparpush{9pt}
 \newcommand{\marginnote}[1]{%
 	\marginpar[\raggedleft\marginfont #1]{\raggedright\marginfont #1}}
 
@@ -190,13 +190,13 @@
 \openoutputfile{\jobname-edges-xrf.csv}{Xrefedges}
 \openoutputfile{\jobname-vertices-xrf.csv}{Xrefvertices}
 \addtostream{Xrefedges}{source,target}
-\addtostream{Xrefvertices}{id,label,type,description}
+\addtostream{Xrefvertices}{id,label,type,description,page}
 
 
 \newcommand\desclabel[2]{%
 	\label{#1}%
 	\global\@namedef{www@label@store@description@#1}{#2}%
-	\addtostream{Xrefvertices}{#1,"\@currentlabel","\csname\InTheoType Keyword\endcsname","#2"}}
+	\addtostream{Xrefvertices}{#1,"\@currentlabel","\csname\InTheoType Keyword\endcsname","#2",\thepage}}
 % getdesc: 
 %  #1 -- label, #2 -- filter, #3 -- error, #4 -- pre, #5 -- post
 \newcommand\label@getdesc[5]{%
@@ -206,12 +206,16 @@
 		#3%
 	\fi}
 
+% Showdesc tests if the label has already been shown on this page. If not, it 
+% show the info for the label, and marks it as shown. The list of shown labels 
+% is cleared at the end of every page with an \AddEverypageHook (see below)
 \gdef\@desc@refs@on@page{}
 \newcommand*\showdesc[1]{%
 	\ifinlist{#1}{\@desc@refs@on@page}{\ClassInfo{wwwnotes2}{Label #1 is already shown, suppressing second display}}{%	
 	\label@getdesc{#1}{\marginnote}{\ClassWarning{wwwnotes2}{Label #1 has no description}}{Ref.\ \ref*{#1}: ``}{''}%
 \listgadd{\@desc@refs@on@page}{#1}}}
 
+% Patch all three of the common reference commands. 
 \newcommand*\descthref[1]{\thref{#1}\showdesc{#1}\writeref{#1}}
 \newcommand*\desceqref[1]{\eqref{#1}\showdesc{#1}\writeref{#1}}
 \newcommand*\descref[1]{\ref{#1}\showdesc{#1}\writeref{#1}}
