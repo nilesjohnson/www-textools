@@ -8,6 +8,8 @@ I provide some pre-configured TeX templates (`.tex-template`).
 
 To include the git version information in your document please see the section on Publishing below. 
 
+Project announcement: https://gitlab.msu.edu/wongwil2/www-textools
+
 ## Publishing with Git Version Info
 
 While working on the project, you probably don't need to worry about
