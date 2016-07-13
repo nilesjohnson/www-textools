@@ -179,7 +179,7 @@
 \newtheorem{thot}[equation]{Thought}
 %%%%% End Theorem like environments %%%%%
 
-%%%%% Margin Notes and Descriptive Labelling (marginfix, everypage) %%%%%
+%%%%% Margin Notes and Descriptive Labelling (marginfix, everypage, newfile) %%%%%
 \newcommand*\marginfont{\footnotesize\itshape}
 \setlength\marginparpush{9pt}
 \newcommand{\marginnote}[1]{%
