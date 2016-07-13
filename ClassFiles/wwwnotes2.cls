@@ -194,14 +194,18 @@
 \addtostream{Xrefvertices}{id,label,type,description,page}
 
 
+% The call to ifmeasuring below is due to AMS-math environments being called twice, first time to measure, the second time to print
+% See e.g. http://tex.stackexchange.com/a/59088/119
 \newcommand\desclabel[2]{%
 	\label{#1}%
-	\global\@namedef{www@label@store@description@#1}{#2}%
-	\ifcsname wwwnotes@isequation\endcsname
-		\addtostream{Xrefvertices}{#1,"(\getrefnumber{#1})","Equation","#2",\getpagerefnumber{#1}}%
+	\ifmeasuring@
 	\else
-		\addtostream{Xrefvertices}{#1,"\getrefnumber{#1}","\csname\InTheoType Keyword\endcsname","#2",\getpagerefnumber{#1}}%
-	\fi}
+		\global\@namedef{www@label@store@description@#1}{#2}%
+		\ifcsname wwwnotes@isequation\endcsname
+			\addtostream{Xrefvertices}{#1,"(\getrefnumber{#1})","Equation","#2",\getpagerefnumber{#1}}%
+		\else
+			\addtostream{Xrefvertices}{#1,"\getrefnumber{#1}","\csname\InTheoType Keyword\endcsname","#2",\getpagerefnumber{#1}}%
+	\fi\fi}
 % getdesc: 
 %  #1 -- label, #2 -- filter, #3 -- error, #4 -- pre, #5 -- post
 \newcommand\label@getdesc[5]{%
@@ -216,8 +220,6 @@
 \AtBeginEnvironment{multline}{\def\wwwnotes@isequation{true}}
 \AtBeginEnvironment{gather}{\def\wwwnotes@isequation{true}}
 \AtBeginEnvironment{align}{\def\wwwnotes@isequation{true}}
-
-
 
 % Showdesc tests if the label has already been shown on this page. If not, it 
 % show the info for the label, and marks it as shown. The list of shown labels 
