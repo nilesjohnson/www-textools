@@ -32,9 +32,11 @@
 
 \RequirePackage{geometry}
 \RequirePackage[pagestyles]{titlesec}
+\RequirePackage{everypage}
 \RequirePackage{etoolbox}
 \RequirePackage{newfile}
 \RequirePackage{emarks}
+\RequirePackage{refcount}
 \RequirePackage{marginfix}
 \RequirePackage{titling}
 
@@ -92,10 +94,10 @@
 	\setfoot[\tiny \copyright~\theauthor][\thepage][]{}{\thepage}{\tiny \GitPageFooter}}
 \pagestyle{wwwfancy}
 
-%Redefine refstepcounter to throw things into the marks
-\let\www@old@refstepcounter\refstepcounter
-\def\refstepcounter#1{%
-	\www@old@refstepcounter{#1}%
+%Redefine stepcounter to throw things into the marks
+\let\www@old@stepcounter\stepcounter
+\def\stepcounter#1{%
+	\www@old@stepcounter{#1}%
 	\ifthenelse{\equal{#1}{equation}}{\marksthecs{www@stuff@mark}{theequation}}{}%
 	\ifthenelse{\equal{#1}{chapter}}{\marksthecs{www@stuff@mark}{theequation}}{}}
 
@@ -178,9 +180,9 @@
 \newtheorem{thot}[equation]{Thought}
 %%%%% End Theorem like environments %%%%%
 
-%%%%% Margin Notes and Descriptive Labelling (marginfix) %%%%%
+%%%%% Margin Notes and Descriptive Labelling (marginfix, everypage, newfile, refcount, ntheorem, amsmath) %%%%%
 \newcommand*\marginfont{\footnotesize\itshape}
-\setlength\marginparpush{12pt}
+\setlength\marginparpush{9pt}
 \newcommand{\marginnote}[1]{%
 	\marginpar[\raggedleft\marginfont #1]{\raggedright\marginfont #1}}
 
@@ -188,14 +190,18 @@
 \newoutputstream{Xrefvertices}
 \openoutputfile{\jobname-edges-xrf.csv}{Xrefedges}
 \openoutputfile{\jobname-vertices-xrf.csv}{Xrefvertices}
-\addtostream{Xrefedges}{referrer,target}
-\addtostream{Xrefvertices}{id,label,type,description}
+\addtostream{Xrefedges}{source,target}
+\addtostream{Xrefvertices}{id,label,type,description,page}
 
 
 \newcommand\desclabel[2]{%
 	\label{#1}%
 	\global\@namedef{www@label@store@description@#1}{#2}%
-	\addtostream{Xrefvertices}{#1,"\@currentlabel","\csname\InTheoType Keyword\endcsname","#2"}}
+	\ifcsname wwwnotes@isequation\endcsname
+		\addtostream{Xrefvertices}{#1,"(\getrefnumber{#1})","Equation","#2",\getpagerefnumber{#1}}%
+	\else
+		\addtostream{Xrefvertices}{#1,"\getrefnumber{#1}","\csname\InTheoType Keyword\endcsname","#2",\getpagerefnumber{#1}}%
+	\fi}
 % getdesc: 
 %  #1 -- label, #2 -- filter, #3 -- error, #4 -- pre, #5 -- post
 \newcommand\label@getdesc[5]{%
@@ -204,11 +210,30 @@
 	\else
 		#3%
 	\fi}
-\newcommand*\showdesc[1]{\label@getdesc{#1}{\marginnote}{\ClassWarning{wwwnotes2}{Label #1 has no description}}{Ref.\ \ref*{#1}: ``}{''}}
+
+% The \InTheoType call is ntheorem specific. We can patch the equation environments to register them.
+\AtBeginEnvironment{equation}{\def\wwwnotes@isequation{true}}
+\AtBeginEnvironment{multline}{\def\wwwnotes@isequation{true}}
+\AtBeginEnvironment{gather}{\def\wwwnotes@isequation{true}}
+\AtBeginEnvironment{align}{\def\wwwnotes@isequation{true}}
+
+
+
+% Showdesc tests if the label has already been shown on this page. If not, it 
+% show the info for the label, and marks it as shown. The list of shown labels 
+% is cleared at the end of every page with an \AddEverypageHook (see below)
+\gdef\@desc@refs@on@page{}
+\newcommand*\showdesc[1]{%
+	\ifinlist{#1}{\@desc@refs@on@page}{\ClassInfo{wwwnotes2}{Label #1 is already shown, suppressing second display}}{%	
+	\label@getdesc{#1}{\marginnote}{\ClassWarning{wwwnotes2}{Label #1 has no description}}{Ref.\ \ref*{#1}: ``}{''}%
+\listgadd{\@desc@refs@on@page}{#1}}}
+
+% Patch all three of the common reference commands. 
 \newcommand*\descthref[1]{\thref{#1}\showdesc{#1}\writeref{#1}}
 \newcommand*\desceqref[1]{\eqref{#1}\showdesc{#1}\writeref{#1}}
 \newcommand*\descref[1]{\ref{#1}\showdesc{#1}\writeref{#1}}
 
 \newcommand*\writeref[1]{\ifdef\wwwnotes@pfofctr{\addtostream{Xrefedges}{\wwwnotes@pfofctr,#1}}{}}
+\AddEverypageHook{\gdef\@desc@refs@on@page{}}
 %%%%% End Margin Notes and Descriptive Labelling %%%%%
 

@@ -22,29 +22,39 @@
 
 \lipsum[1-2]
 
-\csname\InTheoType Keyword\endcsname
+\begin{align}
+C &= D \desclabel{eq000}{$C = D$}\\
+C' &= D' \desclabel{eq001}{$C' = D'$}
+\end{align}
 
-\begin{equation}\label{eq1}
+\begin{subequations}
+\begin{align}
+E &= F \desclabel{eq002}{Another equation}\\
+E' &= F' \desclabel{eq003}{Another equation 2}
+\end{align}
+
+some text
+
+\begin{equation}\desclabel{eq1}{$A = B$}
 	A = B
 \end{equation}
+\end{subequations}
 
-\begin{prop}\label{someprop}
-   Text. \csname\InTheoType Keyword\endcsname
+\begin{prop}\desclabel{someprop}{An unimportant proposition}
+   Text
 \end{prop}
 
-
-
-\begin{thm}\desclabel{thm1}{This is a nonsense theorem. Let's make the description longer to see what we can see. Let us make it longer to see if we can see other interesting things about it.}
+\begin{thm}\desclabel{thm1}{This is a nonsense theorem with no content.}
 	\lipsum[27]
 
-	test \csname\InTheoType Keyword\endcsname
+	test
 \end{thm}
 
 \lipsum[1]
 
 \begin{pfof}{thm1}
 THis is how it goes.
-\begin{thot}[Step 1]\desclabel{parastep}{Here is another nonsense stuff. This is supposed to be the first step to proving. But who knows what this is actually saying.}
+\begin{thot}[Step 1]\desclabel{parastep}{In this step we check a foo is a bar}
 	\lipsum[9-10]
 
 	And this is sufficient.
@@ -53,13 +63,21 @@ Then we can apply \desceqref{eq1} and \descthref{someprop} to get the final answ
 Here ends the proof.
 \end{pfof}
 
-Let's refer to \thref{parastep}
-
-\begin{rmk}
+\begin{rmk}\desclabel{rmk1}{Our proof is actually stronger}
 	\lipsum[27]
 
 	test
 \end{rmk}
+
+\begin{cor}\desclabel{cor1}{Here's an immediate corollary}
+	\lipsum[24]
+
+	text
+\end{cor}
+
+\begin{pfof}{cor1}
+	By using \descthref{rmk1}, we see that \desceqref{eq1} in fact implies something else. Thus the arguments in \descthref{parastep} is in fact good enough to show the strengthened results. 
+\end{pfof}
 
 \begin{equation}
 	C = D
@@ -88,7 +106,6 @@ Some text \cite{Wong2009}.
 
 \chapter{Second chapter}
 
-Test \theequation to see what number would show up.
 
 \lipsum[10-23]
 
