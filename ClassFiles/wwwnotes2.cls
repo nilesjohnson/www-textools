@@ -43,7 +43,7 @@
 \RequirePackage{enumitem}
 \RequirePackage{index}
 \RequirePackage{url}
-\RequirePackage[backend=biber,style=reading,entrykey=false,abstract=false,library=false,file=false,maxnames=10]{biblatex}
+%\RequirePackage[backend=biber,style=reading,entrykey=false,abstract=false,library=false,file=false,maxnames=10]{biblatex}
 
 
 \RequirePackage[oldstylenums,narrowiints,intlimits,sumlimits,noDcommand]{kpfonts}
