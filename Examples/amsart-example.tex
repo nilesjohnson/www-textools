@@ -31,112 +31,70 @@
 \author[WWY Wong]{Willie Wai Yeung Wong}
 %\address{Michigan State University}
 \thanks{other thanks}
-\thanks{\GitPageFooter}
 %\email{wongwwy@member.ams.org}
 %\subjclass[2000]{MSC, look up on AMS}
 
 
-\makeatletter
+\theoremstyle{plain} % bold environment name, italic text
+\newtheorem{thm}{Theorem}[section]
+\newtheorem*{thm*}{Theorem}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem*{prop*}{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
 
-%\RequirePackage[T1]{fontenc}
-%\RequirePackage[english]{babel}
+\theoremstyle{definition} % bold environment name, plain text
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{example}[thm]{Example}
+\newtheorem{notation}[thm]{Notation}
+
+
+\theoremstyle{remark} % italic environment name, plain text
+\newtheorem{rmk}[thm]{Remark}
+
+\newtheorem*{note}{Note}
+
+%% This makes equations follow the theorem counter
+\makeatletter\let\c@equation\c@thm\makeatother
+%% This makes figures follow the theorem counter
+\makeatletter\let\c@figure\c@thm\makeatother
+
+
+
+
+
+%%
+%%  standard document stuff above here
+%%  special stuff below
+%%
+
+
+
+
+
+
+
+
+
+
 
 \RequirePackage{ifthen}
-
-\RequirePackage{geometry}
-%\RequirePackage[pagestyles]{titlesec}
-\RequirePackage{everypage}
 \RequirePackage{etoolbox}
 \RequirePackage{newfile}
-%\RequirePackage{emarks}
-\RequirePackage{refcount}
-\RequirePackage{marginfix}
-\RequirePackage{titling}
-
-\RequirePackage{enumitem}
-\RequirePackage{index}
-\RequirePackage{url}
-%\RequirePackage[backend=biber,style=reading,entrykey=false,abstract=false,library=false,file=false,maxnames=10]{biblatex}
-
-
-%\RequirePackage[oldstylenums,narrowiints,intlimits,sumlimits,noDcommand]{kpfonts}
-
-
-%\RequirePackage{mathtools}
-%\RequirePackage[ntheorem]{empheq}
-%\RequirePackage[amsmath,thmmarks,thref,hyperref]{ntheorem}
-
 \RequirePackage[colorlinks=false]{hyperref}
 
-%% Geometry (geometry)
-\geometry{papersize={7.4in,9.5in},includemp=true,marginparwidth=1.44in,width=6.1in,bindingoffset=0.2in,twoside,hmarginratio={2:1},vmarginratio={3:4},headheight=14pt,headsep=0.2in,footskip=0.5in}
-
-%% Git backup (gracefully degrades if user doesn't use Git)
-\newcommand*\gitShortHash{(git not used)}
-\newcommand*\GitPageFooter{(version info not available)}
 
 
-
-
-% %%%%% Theorem like environments (ntheorem (modified)) %%%%%
-% %\numberwithin{equation}{chapter}
-
-% \theoremstyle{changebreak}
-% \theoremheaderfont{\normalfont\scshape\bfseries}
-% \theorembodyfont{\upshape}
-% \theoremseparator{}
-% \theoremindent0cm
-% \theoremnumbering{arabic}
-% \theoremsymbol{\ensuremath{\blacksquare}}
-
-\newtheorem{thm}[equation]{Theorem}
-\newtheorem{prop}[equation]{Proposition}
-\newtheorem{lem}[equation]{Lemma}
-\newtheorem{cor}[equation]{Corollary}
-\newtheorem{defn}[equation]{Definition}
-\newtheorem{conv}[equation]{Convention}
-
-%\theorembodyfont{\itshape}
-%\theoremsymbol{\ensuremath{\diamondsuit}}
-
-\newtheorem{quest}[equation]{Open Question}
-\newtheorem{conj}[equation]{Conjecture}
-
-%\theoremheaderfont{\normalfont\itshape}
-%\theorembodyfont{\upshape}
-%\theoremsymbol{\ensuremath{\blacksquare}}
-
-\newtheorem{rmk}[equation]{Remark}
-\newtheorem{exa}[equation]{Example}
-\newtheorem{exer}[equation]{Exercise}
-
-%\theoremstyle{nonumberplain}
-%\theoremheaderfont{\normalfont\scshape}
-%\theoremsymbol{\ensuremath{\square}}
-
-%\newtheorem{proof}{Proof}
+\makeatletter 
 
 \newenvironment{pfof}[1]%
 	{\def\wwwnotes@pfofctr{#1}\begin{proof}}%
 	{\end{proof}}
 
-% \newtheoremstyle{wwwnumberonly}%
-%   {\item[\theorem@headerfont\bfseries\hskip\labelsep ##2]}%
-%   {\item[\theorem@headerfont\bfseries\hskip\labelsep ##2 (##3)]}
-%\theoremstyle{wwwnumberonly}
-%\theoremheaderfont{\normalfont\bfseries}
-%\theoremsymbol{\P}
-%\theorempreskip\parsep
-%\theorempostskip\parsep
-
-%\newtheorem{thot}[equation]{Thought}
-%%%%% End Theorem like environments %%%%%
-
-%%%%% Margin Notes and Descriptive Labelling (marginfix, everypage, newfile, refcount, ntheorem, amsmath) %%%%%
-\newcommand*\marginfont{\footnotesize\itshape}
-\setlength\marginparpush{9pt}
-\newcommand{\marginnote}[1]{%
-	\marginpar[\raggedleft\marginfont #1]{\raggedright\marginfont #1}}
+%\newcommand*\marginfont{\footnotesize\itshape}
+%\setlength\marginparpush{9pt}
+%\newcommand{\marginnote}[1]{%
+%	\marginpar[\raggedleft\marginfont #1]{\raggedright\marginfont #1}}
 
 \newoutputstream{Xrefedges}
 \newoutputstream{Xrefvertices}
@@ -152,7 +110,7 @@
 		#3%
 	\fi}
 
-\AddEverypageHook{\gdef\@desc@refs@on@page{}}
+%\AddEverypageHook{\gdef\@desc@refs@on@page{}}
 %%%%% End Margin Notes and Descriptive Labelling %%%%%
 
 
@@ -171,23 +129,11 @@
 \usepackage{lipsum}
 
 
-%%% In the code below author is not the same as the person making the
-%%% committ; see http://git-scm.com/docs/git-commit option --author
-%%% for more information
-\begingroup
-\catcode`\%=12
-\catcode`\$=12
-\gdef\gitAuthorEmail{\url{$Format:%aE$}}
-\gdef\GitPageFooter{$Format: v:\texttt{%h %d}; last edit: %aN on %ai.$}
-\endgroup
-
-
 %\renewcommand{label}[1]{\desclabel{#1}{#1}}
 
 \begin{document}
 
 \let\bareref\ref
-\let\barelabel\label
 \makeatletter
 \newcommand*\writevertex[1]{
   \addtostream{Xrefvertices}{#1,"\getrefnumber{#1}","Label","#1",\getpagerefnumber{#1}}}
@@ -254,6 +200,9 @@ THis is how it goes.
 	\lipsum[9-10]
 
 	And this is sufficient.
+
+\section{section split}
+
 \end{lem}
 Then we can apply \ref{eq1} and \ref{someprop} to get the final answer.
 Here ends the proof.
