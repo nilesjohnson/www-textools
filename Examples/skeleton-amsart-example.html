@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+	<head><title>Theorem visualizer test</title>
+<meta charset="utf-8">
+<script src="http://d3js.org/d3.v3.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"> </script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    },
+    CommonHTML: {
+        minScaleAdjust: 100
+    }
+    });
+</script>       
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+<style>
+path.link {
+  fill: none;
+  stroke: #666;
+  stroke-width: 1.5px;
+}
+
+circle {
+  fill: #ccc;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+text {
+  fill: #000;
+  font: 10px sans-serif;
+  pointer-events: none;
+}
+
+#thmlgd {
+	display: block;
+	border: thin solid #444444;
+	margin: 2em;
+	font-size: medium;
+	width: 900px;
+}
+
+#thmname {
+	display: inline-block;
+	font-size: large;
+	text-decoration: underline;
+}
+
+#thmpnum, #thmdesc, #thmfirstline {
+	margin: 8px;
+}
+
+#thmmark {
+	display: inline-block;
+	font-size: xx-large;
+}
+
+#thmmark::before, #thmmark::after {
+	content: "\00a0\00a0";
+}
+
+#thmpnum::before {
+	font-style: italic;
+	content: "On page: ";
+}
+
+#thmdesc::before{
+	font-style: italic;
+	content: "Description: ";
+}
+
+#thmreflab {
+	display: inline-block;
+	font-size: small;
+	font-family: monospace;
+}
+
+#thmreflab::before {
+	font-size: small;
+	content: " [ ";
+}
+
+#thmreflab::after {
+	font-size: small;
+	content: " ] ";
+}
+</style>
+</head>
+<body>
+	<div id="thmgraph">
+		<div class="ui-widget"><input id="search"><button type="button" onclick="searchThm()">Search</button> &nbsp;&nbsp; Double click on node to show entry details.</div>
+	</div>
+	<div id = "thmlgd">
+		<div id="thmfirstline"><span id="thmname">(None selected)</span> <span id="thmmark">&bull;</span> <span id="thmreflab">TeX label</span></div>
+		<div id="thmpnum"></div>
+		<div id="thmdesc"></div>
+	</div>
+
+	
+	<script>
+
+
+/* Code modified from http://bl.ocks.org/d3noob/5141278 
+   and from http://www.coppelia.io/2014/07/an-a-to-z-of-extra-features-for-the-d3-force-layout/ 
+*/
+
+// Define global variables
+var nodesFileName = "amsart-example-vertices-xrf.csv", 
+    linksFileName = "amsart-example-edges-xrf.csv";
+
+
+// For D3
+var nodes = {}; // The nodes
+var links = []; // The links
+var namesArray = []; // Array of names
+
+// Color scheme
+var color = d3.scale.category20();
+
+// SVG
+var width = 960, height = 600;
+var svg = d3.select("#thmgraph").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+// Build an arrow
+svg.append("svg:defs").selectAll("marker")
+    .data(["end"])      // Different link/path types can be defined here
+  .enter().append("svg:marker")    // This section adds in the arrows
+    .attr("id", String)
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 15)
+    .attr("refY", -1.5)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("orient", "auto")
+  .append("svg:path")
+    .attr("d", "M0,-5L10,0L0,5");
+
+// Set up the force layout. But don't start yet!
+var force = d3.layout.force()
+    .size([width, height])
+    .linkDistance(60)
+    .charge(-300);
+
+/* Code for doing searches */ 
+function searchThm() {
+	// find the node
+	var selectedVal = document.getElementById('search').value;
+    	var node = svg.selectAll(".node");
+    	if (selectedVal == "none") {
+        	node.style("stroke", "white").style("stroke-width", "1");
+    	} else {
+        	var selected = node.filter(function (d, i) {
+            	return d.name != selectedVal;
+        });
+        selected.style("opacity", "0");
+        var link = svg.selectAll(".link")
+        link.style("opacity", "0");
+        d3.selectAll(".node, .link").transition()
+            .duration(5000)
+            .style("opacity", 1);
+    }
+}
+
+/* Code for showing entry */
+function showInfo(name, page, description, label, type) {
+	document.getElementById('thmname').textContent = name;
+	document.getElementById('thmpnum').textContent = page;
+	document.getElementById('thmreflab').textContent = label;
+	document.getElementById('thmmark').style.color = color(type);
+
+	var descField = document.getElementById('thmdesc');
+	descField.textContent = description;
+	MathJax.Hub.Queue(["Typeset",MathJax.Hub,descField]);
+}
+
+// Now let us read the data. Remember that d3.csv reads asynchronously. So we force synchronicity by calling one load from the other. 
+function AfterAllLoaded() {
+	// Build curvy lines
+	function tick() {
+    		path.attr("d", function(d) {
+        	var dx = d.target.x - d.source.x,
+            		dy = d.target.y - d.source.y,
+            		dr = Math.sqrt(dx * dx + dy * dy);
+        	return "M" + 
+            		d.source.x + "," + 
+            		d.source.y + "A" + 
+            		dr + "," + dr + " 0 0,1 " + 
+            		d.target.x + "," + 
+            		d.target.y;
+    		});
+
+    		node.attr("transform", function(d) { 
+  	    		return "translate(" + d.x + "," + d.y + ")"; });
+	}
+		
+	force.nodes(d3.values(nodes))
+		.links(links)
+    		.on("tick", tick)
+		.start();
+
+	// add the links and the arrows
+	var path = svg.append("svg:g").selectAll("path")
+    		.data(force.links())
+  		.enter().append("svg:path")
+    		.attr("class", "link")
+    		.attr("marker-end", "url(#end)");
+
+	// define the nodes
+	var node = svg.selectAll(".node")
+    		.data(force.nodes())
+  		.enter().append("g")
+    		.attr("class", "node")
+    		.call(force.drag);
+
+	node.append("circle")
+		.attr("r", 5)
+		.style("fill", function(d) { return color(d.type); });
+
+	node.append("text")
+		.attr("x",12)
+		.attr("dy", ".35em")
+		.text(function (d) {return d.name;});
+
+	node.on('dblclick', function(d){ showInfo(d.name, d.page, d.description, d.id, d.type);});
+}
+
+// Load the vertices
+d3.csv(nodesFileName, function(error, data) {
+	var tempname = "";
+
+	data.forEach(function(d) {
+		tempname = (d.type != "None") ? d.type + " " + d.label : d.label;
+		nodes[d.id] = { name: tempname, id: d.id, description: d.description, type: d.type, page: d.page };
+		namesArray.push(tempname);
+	});
+	namesArray = namesArray.sort();
+	$(function () {
+		$("#search").autocomplete({source: namesArray});
+	});
+
+	// Now we load the edges
+	d3.csv(linksFileName, function(error,data) {
+		links = data;
+		links.forEach(function(d) {
+			d.source = nodes[d.source];
+			d.target = nodes[d.target];
+			d.value = 1;
+		});
+		AfterAllLoaded();
+	});
+});
+
+	</script>
+</body>
+</html>

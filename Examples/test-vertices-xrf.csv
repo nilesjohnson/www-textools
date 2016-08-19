@@ -1,0 +1,11 @@
+id,label,type,description,page
+eq000,"(1.1)","Equation","$C = D$",5
+eq001,"(1.2)","Equation","$C' = D'$",5
+eq002,"(1.3a)","Equation","Another equation",6
+eq003,"(1.3b)","Equation","Another equation 2",6
+eq1,"(1.3c)","Equation","$A = B$",6
+someprop,"1.4","Proposition","An unimportant proposition",6
+thm1,"1.5","Theorem","This is a nonsense theorem with no content.",6
+parastep,"1.6","Thought","In this step we check a foo is a bar",6
+rmk1,"1.7","Remark","Our proof is actually stronger",7
+cor1,"1.8","Corollary","Here's an immediate corollary",7

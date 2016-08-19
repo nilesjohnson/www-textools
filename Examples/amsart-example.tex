@@ -1,0 +1,170 @@
+\documentclass[amssymb,amsfonts]{wwwnotes2}
+\usepackage{amssymb, latexsym}
+\usepackage[T1]{fontenc}
+% So that the accented characters are dealt with correctly
+\usepackage[intlimits,sumlimits,noDcommand,narrowiints]{kpfonts}
+\usepackage[english]{babel}
+\usepackage{microtype}
+\usepackage{svn}
+\usepackage[notref,notcite]{showkeys}
+%\usepackage{changes}
+% The changes package allows editing marks (addition, deletion,
+% replacement) with attribution to author(s). See CTAN
+%\usepackage{empheq}
+% Empheq 'emphasizes equations', and gives a visual markup extension
+% to amsmath. In particular you can have a left braced set of
+% equations number individually. See CTAN for details
+\usepackage{tensor}
+% The tensor package allows left indices and auto-justified/spaced
+% sub/super scripts. See Documentation in CTAN
+%\usepackage{bbm}
+% Provides blackboard characters for other than upper-case latin
+\usepackage{constants}
+% Constants provide a way to automatically number constant/error
+% terms.
+%\usepackage[pdfusetitle]{hyperref}
+% Remember to replace when done!
+%\usepackage{www_math_commands}
+
+\usepackage{lipsum}
+
+
+
+%%% In the code below author is not the same as the person making the
+%%% committ; see http://git-scm.com/docs/git-commit option --author
+%%% for more information
+\begingroup
+\catcode`\%=12
+\catcode`\$=12
+\gdef\gitAuthorEmail{\url{$Format:%aE$}}
+\gdef\GitPageFooter{$Format: v:\texttt{%h %d}; last edit: %aN on %ai.$}
+\endgroup
+
+
+%\renewcommand{label}[1]{\desclabel{#1}{#1}}
+
+\begin{document}
+\title[short title]{long title}
+\author[WWY Wong]{Willie Wai Yeung Wong}
+%\address{Michigan State University}
+\thanks{other thanks}
+\thanks{\GitPageFooter}
+%\email{wongwwy@member.ams.org}
+%\subjclass[2000]{MSC, look up on AMS}
+
+\begin{abstract}
+\end{abstract}
+
+
+
+
+\maketitle
+
+
+
+\tableofcontents
+
+\chapter{First chapter}
+
+\lipsum[1-2]
+
+\begin{align}
+C &= D \desclabel{eq000}{$C = D$}\\
+C' &= D' \desclabel{eq001}{$C' = D'$}
+\end{align}
+
+\thref{eq001}
+
+\begin{subequations}
+\begin{align}
+E &= F \desclabel{eq002}{Another equation}\\
+E' &= F' \desclabel{eq003}{Another equation 2}
+\end{align}
+
+some text
+
+\begin{equation}\desclabel{eq1}{$A = B$}
+	A = B
+\end{equation}
+\end{subequations}
+
+\begin{prop}\desclabel{someprop}{An unimportant proposition}
+   Text
+\end{prop}
+
+\begin{thm}\desclabel{thm1}{This is a nonsense theorem with no content.}
+	\lipsum[27]
+
+	test
+\end{thm}
+
+\lipsum[1]
+
+\begin{pfof}{thm1}
+THis is how it goes.
+\begin{thot}[Step 1]\desclabel{parastep}{In this step we check a foo is a bar}
+	\lipsum[9-10]
+
+	And this is sufficient.
+\end{thot}
+Then we can apply \desceqref{eq1} and \descthref{someprop} to get the final answer.
+Here ends the proof.
+\end{pfof}
+
+\begin{rmk}\desclabel{rmk1}{Our proof is actually stronger}
+	\lipsum[27]
+
+	test
+\end{rmk}
+
+\begin{cor}\desclabel{cor1}{Here's an immediate corollary}
+	\lipsum[24]
+
+	text
+\end{cor}
+
+\begin{pfof}{cor1}
+	By using \descthref{rmk1}, we see that \desceqref{eq1} in fact implies something else. Thus the arguments in \descthref{parastep} is in fact good enough to show the strengthened results. 
+\end{pfof}
+
+\begin{equation}
+	C = D
+\end{equation}
+
+\section{A section on \TeX{}niques}
+
+Before doing anything else, let us recall \descthref{thm1}. Also let's try \descthref{parastep}.
+
+\lipsum[2]
+
+\begin{equation}
+	A = B
+\end{equation}
+
+\lipsum[3-8]
+
+
+
+\section{Another section}
+
+\lipsum[5-9]
+
+Some text \cite{Wong2009}.
+
+
+\chapter{Second chapter}
+
+
+\lipsum[10-23]
+
+\begin{equation}
+K = \frac12 mv^2
+\end{equation}
+
+This is it.
+
+
+\bibliographystyle{amsalpha}
+\bibliography{mixmaster.bib}
+
+\end{document}
