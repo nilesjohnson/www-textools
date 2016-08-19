@@ -1,8 +1,8 @@
-\documentclass[amssymb,amsfonts]{wwwnotes2}
+\documentclass[amssymb,amsfonts]{amsart}
 \usepackage{amssymb, latexsym}
 \usepackage[T1]{fontenc}
 % So that the accented characters are dealt with correctly
-\usepackage[intlimits,sumlimits,noDcommand,narrowiints]{kpfonts}
+%\usepackage[intlimits,sumlimits,noDcommand,narrowiints]{kpfonts}
 \usepackage[english]{babel}
 \usepackage{microtype}
 \usepackage{svn}
@@ -26,9 +26,190 @@
 % Remember to replace when done!
 %\usepackage{www_math_commands}
 
+
+\title[short title]{long title}
+\author[WWY Wong]{Willie Wai Yeung Wong}
+%\address{Michigan State University}
+\thanks{other thanks}
+\thanks{\GitPageFooter}
+%\email{wongwwy@member.ams.org}
+%\subjclass[2000]{MSC, look up on AMS}
+
+
+\makeatletter
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage[english]{babel}
+
+\RequirePackage{ifthen}
+
+\RequirePackage{geometry}
+\RequirePackage[pagestyles]{titlesec}
+\RequirePackage{everypage}
+\RequirePackage{etoolbox}
+\RequirePackage{newfile}
+\RequirePackage{emarks}
+\RequirePackage{refcount}
+\RequirePackage{marginfix}
+\RequirePackage{titling}
+
+\RequirePackage{enumitem}
+\RequirePackage{index}
+\RequirePackage{url}
+%\RequirePackage[backend=biber,style=reading,entrykey=false,abstract=false,library=false,file=false,maxnames=10]{biblatex}
+
+
+\RequirePackage[oldstylenums,narrowiints,intlimits,sumlimits,noDcommand]{kpfonts}
+
+
+\RequirePackage{mathtools}
+\RequirePackage[ntheorem]{empheq}
+%\RequirePackage[amsmath,thmmarks,thref,hyperref]{ntheorem}
+
+\RequirePackage[colorlinks=false]{hyperref}
+
+%% Geometry (geometry)
+\geometry{papersize={7.4in,9.5in},includemp=true,marginparwidth=1.44in,width=6.1in,bindingoffset=0.2in,twoside,hmarginratio={2:1},vmarginratio={3:4},headheight=14pt,headsep=0.2in,footskip=0.5in}
+
+%% Git backup (gracefully degrades if user doesn't use Git)
+\newcommand*\gitShortHash{(git not used)}
+\newcommand*\GitPageFooter{(version info not available)}
+
+
+
+
+% %%%%% Theorem like environments (ntheorem (modified)) %%%%%
+% %\numberwithin{equation}{chapter}
+
+% \theoremstyle{changebreak}
+% \theoremheaderfont{\normalfont\scshape\bfseries}
+% \theorembodyfont{\upshape}
+% \theoremseparator{}
+% \theoremindent0cm
+% \theoremnumbering{arabic}
+% \theoremsymbol{\ensuremath{\blacksquare}}
+
+\newtheorem{thm}[equation]{Theorem}
+\newtheorem{prop}[equation]{Proposition}
+\newtheorem{lem}[equation]{Lemma}
+\newtheorem{cor}[equation]{Corollary}
+\newtheorem{defn}[equation]{Definition}
+\newtheorem{conv}[equation]{Convention}
+
+%\theorembodyfont{\itshape}
+%\theoremsymbol{\ensuremath{\diamondsuit}}
+
+\newtheorem{quest}[equation]{Open Question}
+\newtheorem{conj}[equation]{Conjecture}
+
+%\theoremheaderfont{\normalfont\itshape}
+%\theorembodyfont{\upshape}
+%\theoremsymbol{\ensuremath{\blacksquare}}
+
+\newtheorem{rmk}[equation]{Remark}
+\newtheorem{exa}[equation]{Example}
+\newtheorem{exer}[equation]{Exercise}
+
+%\theoremstyle{nonumberplain}
+%\theoremheaderfont{\normalfont\scshape}
+%\theoremsymbol{\ensuremath{\square}}
+
+%\newtheorem{proof}{Proof}
+
+\newenvironment{pfof}[1]%
+	{\def\wwwnotes@pfofctr{#1}\begin{proof}}%
+	{\end{proof}}
+
+% \newtheoremstyle{wwwnumberonly}%
+%   {\item[\theorem@headerfont\bfseries\hskip\labelsep ##2]}%
+%   {\item[\theorem@headerfont\bfseries\hskip\labelsep ##2 (##3)]}
+%\theoremstyle{wwwnumberonly}
+%\theoremheaderfont{\normalfont\bfseries}
+%\theoremsymbol{\P}
+%\theorempreskip\parsep
+%\theorempostskip\parsep
+
+%\newtheorem{thot}[equation]{Thought}
+%%%%% End Theorem like environments %%%%%
+
+%%%%% Margin Notes and Descriptive Labelling (marginfix, everypage, newfile, refcount, ntheorem, amsmath) %%%%%
+\newcommand*\marginfont{\footnotesize\itshape}
+\setlength\marginparpush{9pt}
+\newcommand{\marginnote}[1]{%
+	\marginpar[\raggedleft\marginfont #1]{\raggedright\marginfont #1}}
+
+\newoutputstream{Xrefedges}
+\newoutputstream{Xrefvertices}
+\openoutputfile{\jobname-edges-xrf.csv}{Xrefedges}
+\openoutputfile{\jobname-vertices-xrf.csv}{Xrefvertices}
+\addtostream{Xrefedges}{source,target}
+\addtostream{Xrefvertices}{id,label,type,description,page}
+
+
+% The call to ifmeasuring below is due to AMS-math environments being called twice, first time to measure, the second time to print
+% See e.g. http://tex.stackexchange.com/a/59088/119
+\newcommand\desclabel[2]{%
+	\label{#1}%
+	\ifmeasuring@
+	\else
+		\global\@namedef{www@label@store@description@#1}{#2}%
+		\ifcsname wwwnotes@isequation\endcsname
+			\addtostream{Xrefvertices}{#1,"(\getrefnumber{#1})","Equation","#2",\getpagerefnumber{#1}}%
+		\else
+			\addtostream{Xrefvertices}{#1,"\getrefnumber{#1}","\csname\InTheoType Keyword\endcsname","#2",\getpagerefnumber{#1}}%
+	\fi\fi}
+% getdesc: 
+%  #1 -- label, #2 -- filter, #3 -- error, #4 -- pre, #5 -- post
+\newcommand\label@getdesc[5]{%
+	\ifcsname www@label@store@description@#1\endcsname
+		#2{#4\@nameuse{www@label@store@description@#1}#5}%
+	\else
+		#3%
+	\fi}
+
+% The \InTheoType call is ntheorem specific. We can patch the equation environments to register them.
+\AtBeginEnvironment{equation}{\def\wwwnotes@isequation{true}}
+\AtBeginEnvironment{multline}{\def\wwwnotes@isequation{true}}
+\AtBeginEnvironment{gather}{\def\wwwnotes@isequation{true}}
+\AtBeginEnvironment{align}{\def\wwwnotes@isequation{true}}
+
+% Showdesc tests if the label has already been shown on this page. If not, it 
+% show the info for the label, and marks it as shown. The list of shown labels 
+% is cleared at the end of every page with an \AddEverypageHook (see below)
+\gdef\@desc@refs@on@page{}
+\newcommand*\showdesc[1]{%
+	\ifinlist{#1}{\@desc@refs@on@page}{\ClassInfo{wwwnotes2}{Label #1 is already shown, suppressing second display}}{%	
+	\label@getdesc{#1}{\marginnote}{\ClassWarning{wwwnotes2}{Label #1 has no description}}{Ref.\ \ref*{#1}: ``}{''}%
+\listgadd{\@desc@refs@on@page}{#1}}}
+
+% Patch all three of the common reference commands. 
+\newcommand*{\bareref}{\ref}
+
+\newcommand*\descthref[1]{\thref{#1}\showdesc{#1}\writeref{#1}}
+\newcommand*\desceqref[1]{\eqref{#1}\showdesc{#1}\writeref{#1}}
+%\renewcommand*\ref[1]{\bareref{#1}\showdesc{#1}\writeref{#1}}
+
+\newcommand*\writeref[1]{\ifdef\wwwnotes@pfofctr{\addtostream{Xrefedges}{\wwwnotes@pfofctr,#1}}{}}
+\AddEverypageHook{\gdef\@desc@refs@on@page{}}
+%%%%% End Margin Notes and Descriptive Labelling %%%%%
+
+
+
+%\renewcommand{\ref}[1]{\OLDref{#1}\showdesc{#1}\writeref{#1}}
+
+
+
+\makeatother
+
+
+
+
+
+
 \usepackage{lipsum}
 
-
+\newcommand{\mylabel}[1]{\desclabel{#1}{#1}}
+\newcommand{\myref}[1]{\OLDref{#1}\showdesc{#1}\writeref{#1}}
 
 %%% In the code below author is not the same as the person making the
 %%% committ; see http://git-scm.com/docs/git-commit option --author
@@ -44,13 +225,25 @@
 %\renewcommand{label}[1]{\desclabel{#1}{#1}}
 
 \begin{document}
-\title[short title]{long title}
-\author[WWY Wong]{Willie Wai Yeung Wong}
-%\address{Michigan State University}
-\thanks{other thanks}
-\thanks{\GitPageFooter}
-%\email{wongwwy@member.ams.org}
-%\subjclass[2000]{MSC, look up on AMS}
+
+\let\bareref\ref
+\let\barelabel\label
+\makeatletter
+\renewcommand*\ref[1]{\bareref{#1}\writeref{#1}}
+\renewcommand*\label[1]{%
+	\barelabel{#1}%
+        \addtostream{Xrefvertices}{#1,"(\getrefnumber{#1})","Equation","#1",\getpagerefnumber{#1}}
+	\ifmeasuring@
+	\else
+		%\global\@namedef{www@label@store@description@#1}{#1}%
+		\ifcsname wwwnotes@isequation\endcsname
+			\addtostream{Xrefvertices}{#1,"(\getrefnumber{#1})","Equation","#1",\getpagerefnumber{#1}}%
+		\else
+			\addtostream{Xrefvertices}{#1,"\getrefnumber{#1}","Item","#1",\getpagerefnumber{#1}}%
+	\fi\fi} 
+
+
+\makeatother
 
 \begin{abstract}
 \end{abstract}
@@ -62,37 +255,36 @@
 
 
 
-\tableofcontents
 
 \chapter{First chapter}
 
 \lipsum[1-2]
 
-\begin{align}
-C &= D \desclabel{eq000}{$C = D$}\\
-C' &= D' \desclabel{eq001}{$C' = D'$}
+\begin{align}\label{eqA}
+C &= D \\
+C' &= D' \label{eq001}
 \end{align}
 
-\thref{eq001}
+\ref{eq001} 
 
 \begin{subequations}
 \begin{align}
-E &= F \desclabel{eq002}{Another equation}\\
-E' &= F' \desclabel{eq003}{Another equation 2}
+E &= F \label{eq002}\\
+E' &= F' \label{eq003}
 \end{align}
 
 some text
 
-\begin{equation}\desclabel{eq1}{$A = B$}
+\begin{equation}\label{eq1}
 	A = B
 \end{equation}
 \end{subequations}
 
-\begin{prop}\desclabel{someprop}{An unimportant proposition}
+\begin{prop}\label{someprop}
    Text
 \end{prop}
 
-\begin{thm}\desclabel{thm1}{This is a nonsense theorem with no content.}
+\begin{thm}\label{thm1}
 	\lipsum[27]
 
 	test
@@ -102,38 +294,38 @@ some text
 
 \begin{pfof}{thm1}
 THis is how it goes.
-\begin{thot}[Step 1]\desclabel{parastep}{In this step we check a foo is a bar}
+\begin{lem}[Step 1]\label{parastep}
 	\lipsum[9-10]
 
 	And this is sufficient.
-\end{thot}
-Then we can apply \desceqref{eq1} and \descthref{someprop} to get the final answer.
+\end{lem}
+Then we can apply \ref{eq001} and \ref{someprop} to get the final answer.
 Here ends the proof.
 \end{pfof}
 
-\begin{rmk}\desclabel{rmk1}{Our proof is actually stronger}
+\begin{rmk}\label{rmk1}
 	\lipsum[27]
 
 	test
 \end{rmk}
 
-\begin{cor}\desclabel{cor1}{Here's an immediate corollary}
+\begin{cor}\label{cor1}
 	\lipsum[24]
 
 	text
 \end{cor}
 
 \begin{pfof}{cor1}
-	By using \descthref{rmk1}, we see that \desceqref{eq1} in fact implies something else. Thus the arguments in \descthref{parastep} is in fact good enough to show the strengthened results. 
+	By using \ref{rmk1}\writeref{rmk1}, we see that \ref{eq1} in fact implies something else. Thus the arguments in \ref{parastep} is in fact good enough to show the strengthened results. 
 \end{pfof}
 
 \begin{equation}
 	C = D
 \end{equation}
 
-\section{A section on \TeX{}niques}
+%\section{A section on techniques}
 
-Before doing anything else, let us recall \descthref{thm1}. Also let's try \descthref{parastep}.
+Before doing anything else, let us recall \ref{thm1}. Also let's try \ref{parastep}.
 
 \lipsum[2]
 
@@ -145,7 +337,7 @@ Before doing anything else, let us recall \descthref{thm1}. Also let's try \desc
 
 
 
-\section{Another section}
+%\section{Another section}
 
 \lipsum[5-9]
 

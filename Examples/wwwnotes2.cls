@@ -196,8 +196,9 @@
 
 % The call to ifmeasuring below is due to AMS-math environments being called twice, first time to measure, the second time to print
 % See e.g. http://tex.stackexchange.com/a/59088/119
+\newcommand\barelabel\label
 \newcommand\desclabel[2]{%
-	\label{#1}%
+	\barelabel{#1}%
 	\ifmeasuring@
 	\else
 		\global\@namedef{www@label@store@description@#1}{#2}%
@@ -206,6 +207,9 @@
 		\else
 			\addtostream{Xrefvertices}{#1,"\getrefnumber{#1}","\csname\InTheoType Keyword\endcsname","#2",\getpagerefnumber{#1}}%
 	\fi\fi}
+\renewcommand\label[1]{%
+        \desclabel{#1}{#1}
+        }
 % getdesc: 
 %  #1 -- label, #2 -- filter, #3 -- error, #4 -- pre, #5 -- post
 \newcommand\label@getdesc[5]{%
