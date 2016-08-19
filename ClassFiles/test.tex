@@ -22,10 +22,25 @@
 
 \lipsum[1-2]
 
+\begin{align}
+C &= D \desclabel{eq000}{$C = D$}\\
+C' &= D' \desclabel{eq001}{$C' = D'$}
+\end{align}
+
+\thref{eq001}
+
+\begin{subequations}
+\begin{align}
+E &= F \desclabel{eq002}{Another equation}\\
+E' &= F' \desclabel{eq003}{Another equation 2}
+\end{align}
+
+some text
 
 \begin{equation}\desclabel{eq1}{$A = B$}
 	A = B
 \end{equation}
+\end{subequations}
 
 \begin{prop}\desclabel{someprop}{An unimportant proposition}
    Text

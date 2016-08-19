@@ -36,6 +36,7 @@
 \RequirePackage{etoolbox}
 \RequirePackage{newfile}
 \RequirePackage{emarks}
+\RequirePackage{refcount}
 \RequirePackage{marginfix}
 \RequirePackage{titling}
 
@@ -93,10 +94,10 @@
 	\setfoot[\tiny \copyright~\theauthor][\thepage][]{}{\thepage}{\tiny \GitPageFooter}}
 \pagestyle{wwwfancy}
 
-%Redefine refstepcounter to throw things into the marks
-\let\www@old@refstepcounter\refstepcounter
-\def\refstepcounter#1{%
-	\www@old@refstepcounter{#1}%
+%Redefine stepcounter to throw things into the marks
+\let\www@old@stepcounter\stepcounter
+\def\stepcounter#1{%
+	\www@old@stepcounter{#1}%
 	\ifthenelse{\equal{#1}{equation}}{\marksthecs{www@stuff@mark}{theequation}}{}%
 	\ifthenelse{\equal{#1}{chapter}}{\marksthecs{www@stuff@mark}{theequation}}{}}
 
@@ -179,7 +180,7 @@
 \newtheorem{thot}[equation]{Thought}
 %%%%% End Theorem like environments %%%%%
 
-%%%%% Margin Notes and Descriptive Labelling (marginfix, everypage) %%%%%
+%%%%% Margin Notes and Descriptive Labelling (marginfix, everypage, newfile, refcount, ntheorem, amsmath) %%%%%
 \newcommand*\marginfont{\footnotesize\itshape}
 \setlength\marginparpush{9pt}
 \newcommand{\marginnote}[1]{%
@@ -193,10 +194,18 @@
 \addtostream{Xrefvertices}{id,label,type,description,page}
 
 
+% The call to ifmeasuring below is due to AMS-math environments being called twice, first time to measure, the second time to print
+% See e.g. http://tex.stackexchange.com/a/59088/119
 \newcommand\desclabel[2]{%
 	\label{#1}%
-	\global\@namedef{www@label@store@description@#1}{#2}%
-	\addtostream{Xrefvertices}{#1,"\@currentlabel","\csname\InTheoType Keyword\endcsname","#2",\thepage}}
+	\ifmeasuring@
+	\else
+		\global\@namedef{www@label@store@description@#1}{#2}%
+		\ifcsname wwwnotes@isequation\endcsname
+			\addtostream{Xrefvertices}{#1,"(\getrefnumber{#1})","Equation","#2",\getpagerefnumber{#1}}%
+		\else
+			\addtostream{Xrefvertices}{#1,"\getrefnumber{#1}","\csname\InTheoType Keyword\endcsname","#2",\getpagerefnumber{#1}}%
+	\fi\fi}
 % getdesc: 
 %  #1 -- label, #2 -- filter, #3 -- error, #4 -- pre, #5 -- post
 \newcommand\label@getdesc[5]{%
@@ -205,6 +214,12 @@
 	\else
 		#3%
 	\fi}
+
+% The \InTheoType call is ntheorem specific. We can patch the equation environments to register them.
+\AtBeginEnvironment{equation}{\def\wwwnotes@isequation{true}}
+\AtBeginEnvironment{multline}{\def\wwwnotes@isequation{true}}
+\AtBeginEnvironment{gather}{\def\wwwnotes@isequation{true}}
+\AtBeginEnvironment{align}{\def\wwwnotes@isequation{true}}
 
 % Showdesc tests if the label has already been shown on this page. If not, it 
 % show the info for the label, and marks it as shown. The list of shown labels 
