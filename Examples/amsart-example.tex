@@ -145,21 +145,6 @@
 \addtostream{Xrefedges}{source,target}
 \addtostream{Xrefvertices}{id,label,type,description,page}
 
-
-% The call to ifmeasuring below is due to AMS-math environments being called twice, first time to measure, the second time to print
-% See e.g. http://tex.stackexchange.com/a/59088/119
-\newcommand\desclabel[2]{%
-	\label{#1}%
-	\ifmeasuring@
-	\else
-		\global\@namedef{www@label@store@description@#1}{#2}%
-		\ifcsname wwwnotes@isequation\endcsname
-			\addtostream{Xrefvertices}{#1,"(\getrefnumber{#1})","Equation","#2",\getpagerefnumber{#1}}%
-		\else
-			\addtostream{Xrefvertices}{#1,"\getrefnumber{#1}","\csname\InTheoType Keyword\endcsname","#2",\getpagerefnumber{#1}}%
-	\fi\fi}
-% getdesc: 
-%  #1 -- label, #2 -- filter, #3 -- error, #4 -- pre, #5 -- post
 \newcommand\label@getdesc[5]{%
 	\ifcsname www@label@store@description@#1\endcsname
 		#2{#4\@nameuse{www@label@store@description@#1}#5}%
@@ -167,29 +152,6 @@
 		#3%
 	\fi}
 
-% The \InTheoType call is ntheorem specific. We can patch the equation environments to register them.
-\AtBeginEnvironment{equation}{\def\wwwnotes@isequation{true}}
-\AtBeginEnvironment{multline}{\def\wwwnotes@isequation{true}}
-\AtBeginEnvironment{gather}{\def\wwwnotes@isequation{true}}
-\AtBeginEnvironment{align}{\def\wwwnotes@isequation{true}}
-
-% Showdesc tests if the label has already been shown on this page. If not, it 
-% show the info for the label, and marks it as shown. The list of shown labels 
-% is cleared at the end of every page with an \AddEverypageHook (see below)
-\gdef\@desc@refs@on@page{}
-\newcommand*\showdesc[1]{%
-	\ifinlist{#1}{\@desc@refs@on@page}{\ClassInfo{wwwnotes2}{Label #1 is already shown, suppressing second display}}{%	
-	\label@getdesc{#1}{\marginnote}{\ClassWarning{wwwnotes2}{Label #1 has no description}}{Ref.\ \ref*{#1}: ``}{''}%
-\listgadd{\@desc@refs@on@page}{#1}}}
-
-% Patch all three of the common reference commands. 
-\newcommand*{\bareref}{\ref}
-
-\newcommand*\descthref[1]{\thref{#1}\showdesc{#1}\writeref{#1}}
-\newcommand*\desceqref[1]{\eqref{#1}\showdesc{#1}\writeref{#1}}
-%\renewcommand*\ref[1]{\bareref{#1}\showdesc{#1}\writeref{#1}}
-
-\newcommand*\writeref[1]{\ifdef\wwwnotes@pfofctr{\addtostream{Xrefedges}{\wwwnotes@pfofctr,#1}}{}}
 \AddEverypageHook{\gdef\@desc@refs@on@page{}}
 %%%%% End Margin Notes and Descriptive Labelling %%%%%
 
@@ -208,8 +170,6 @@
 
 \usepackage{lipsum}
 
-\newcommand{\mylabel}[1]{\desclabel{#1}{#1}}
-\newcommand{\myref}[1]{\OLDref{#1}\showdesc{#1}\writeref{#1}}
 
 %%% In the code below author is not the same as the person making the
 %%% committ; see http://git-scm.com/docs/git-commit option --author
@@ -229,19 +189,15 @@
 \let\bareref\ref
 \let\barelabel\label
 \makeatletter
+\newcommand*\writevertex[1]{
+  \addtostream{Xrefvertices}{#1,"\getrefnumber{#1}","Label","#1",\getpagerefnumber{#1}}}
+\newcommand*\writeref[1]{\ifdef\wwwnotes@pfofctr{
+  \writevertex{\wwwnotes@pfofctr}
+  \writevertex{#1}
+  \addtostream{Xrefedges}{\wwwnotes@pfofctr,#1}
+}{}}
 \renewcommand*\ref[1]{\bareref{#1}\writeref{#1}}
-\renewcommand*\label[1]{%
-	\barelabel{#1}%
-        \addtostream{Xrefvertices}{#1,"(\getrefnumber{#1})","Equation","#1",\getpagerefnumber{#1}}
-	\ifmeasuring@
-	\else
-		%\global\@namedef{www@label@store@description@#1}{#1}%
-		\ifcsname wwwnotes@isequation\endcsname
-			\addtostream{Xrefvertices}{#1,"(\getrefnumber{#1})","Equation","#1",\getpagerefnumber{#1}}%
-		\else
-			\addtostream{Xrefvertices}{#1,"\getrefnumber{#1}","Item","#1",\getpagerefnumber{#1}}%
-	\fi\fi} 
-
+ 
 
 \makeatother
 
@@ -299,7 +255,7 @@ THis is how it goes.
 
 	And this is sufficient.
 \end{lem}
-Then we can apply \ref{eq001} and \ref{someprop} to get the final answer.
+Then we can apply \ref{eq1} and \ref{someprop} to get the final answer.
 Here ends the proof.
 \end{pfof}
 
