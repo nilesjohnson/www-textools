@@ -1,6 +1,8 @@
 # www-textools
 
-A collection of TeX-related things. 
+A collection of TeX-related things.
+
+Author: Willie Wong  https://gitlab.msu.edu/u/wongwil2
 
 To use: download the relevant class (`.cls`) and package (`.sty`) files. You may need to read the source to see what are the dependencies. 
 
@@ -10,7 +12,61 @@ To include the git version information in your document please see the section o
 
 Project repo: https://gitlab.msu.edu/wongwil2/www-textools 
 
-Project announcement: https://plus.google.com/+WillieWong/posts/2SApbdjv6po
+Project announcement:
+https://plus.google.com/+WillieWong/posts/2SApbdjv6po
+
+
+
+## Motivation
+
+Reading long papers can be quite taxing, especially when trying to
+keep track of the logical relationships between theorems and lemmata,
+or to sometimes even just to remember what "Lemma 3.6.13" said. (No,
+you can't remember it, and so you have to flip through half of a 300
+page paper to find that lemma.)
+
+Trying to make life slightly easier for future readers of my work
+(especially graduate students who will be taking my class next
+spring), I've been working on a couple of solutions in tandem.
+
+## Descriptive Referencing
+
+The functionality is quite simple: when calling \label, one adds a
+second argument containing a short descriptor of the thing being
+labeled. When calling \ref, the description will be printed in the
+margin. (There's some intelligence involving not placing the
+description more than once per page and other small things.) Currently
+it is only available in the form of a special document class since it
+only really works when you have ample margin space to work with, and
+the standard classes are not good in that regards (with the possible
+exception of amsart.)
+
+## New proof environment
+
+The LaTeX code also defines a new proof environment, which can track
+the \ref commands used within. This is then used to output auxiliary
+data files that store the cross reference logic used in the
+proofs.
+
+## Dependency graph
+
+With (not too much) javascript, this data can be displayed as an
+interactive graph showing how different parts of the paper fit
+together. The link below shows the output from a dummy test
+document. Features:
+
+ - Different colors for different "theorem types". 
+ - Search function for ease of locating a theorem (this is meant to be
+   used together with the book/lecture notes, so we search by labels
+   like "Theorem 1.3").
+ - Display of the description, and the page number on which the full
+   statement can be found.
+ - MathJax support! So mathematics included in the short descriptions
+   are properly rendered.
+
+
+
+
 
 ## Publishing with Git Version Info
 
