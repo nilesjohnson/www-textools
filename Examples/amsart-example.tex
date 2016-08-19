@@ -4,8 +4,8 @@
 % So that the accented characters are dealt with correctly
 %\usepackage[intlimits,sumlimits,noDcommand,narrowiints]{kpfonts}
 \usepackage[english]{babel}
-\usepackage{microtype}
-\usepackage{svn}
+%\usepackage{microtype}
+%\usepackage{svn}
 \usepackage[notref,notcite]{showkeys}
 %\usepackage{changes}
 % The changes package allows editing marks (addition, deletion,
@@ -14,12 +14,12 @@
 % Empheq 'emphasizes equations', and gives a visual markup extension
 % to amsmath. In particular you can have a left braced set of
 % equations number individually. See CTAN for details
-\usepackage{tensor}
+%\usepackage{tensor}
 % The tensor package allows left indices and auto-justified/spaced
 % sub/super scripts. See Documentation in CTAN
 %\usepackage{bbm}
 % Provides blackboard characters for other than upper-case latin
-\usepackage{constants}
+%\usepackage{constants}
 % Constants provide a way to automatically number constant/error
 % terms.
 %\usepackage[pdfusetitle]{hyperref}
@@ -38,17 +38,17 @@
 
 \makeatletter
 
-\RequirePackage[T1]{fontenc}
-\RequirePackage[english]{babel}
+%\RequirePackage[T1]{fontenc}
+%\RequirePackage[english]{babel}
 
 \RequirePackage{ifthen}
 
 \RequirePackage{geometry}
-\RequirePackage[pagestyles]{titlesec}
+%\RequirePackage[pagestyles]{titlesec}
 \RequirePackage{everypage}
 \RequirePackage{etoolbox}
 \RequirePackage{newfile}
-\RequirePackage{emarks}
+%\RequirePackage{emarks}
 \RequirePackage{refcount}
 \RequirePackage{marginfix}
 \RequirePackage{titling}
@@ -59,11 +59,11 @@
 %\RequirePackage[backend=biber,style=reading,entrykey=false,abstract=false,library=false,file=false,maxnames=10]{biblatex}
 
 
-\RequirePackage[oldstylenums,narrowiints,intlimits,sumlimits,noDcommand]{kpfonts}
+%\RequirePackage[oldstylenums,narrowiints,intlimits,sumlimits,noDcommand]{kpfonts}
 
 
-\RequirePackage{mathtools}
-\RequirePackage[ntheorem]{empheq}
+%\RequirePackage{mathtools}
+%\RequirePackage[ntheorem]{empheq}
 %\RequirePackage[amsmath,thmmarks,thref,hyperref]{ntheorem}
 
 \RequirePackage[colorlinks=false]{hyperref}
@@ -212,7 +212,7 @@
 
 
 
-\chapter{First chapter}
+\section{First section}
 
 \lipsum[1-2]
 
@@ -279,7 +279,7 @@ Here ends the proof.
 	C = D
 \end{equation}
 
-%\section{A section on techniques}
+\section{A section on techniques}
 
 Before doing anything else, let us recall \ref{thm1}. Also let's try \ref{parastep}.
 
@@ -300,7 +300,7 @@ Before doing anything else, let us recall \ref{thm1}. Also let's try \ref{parast
 Some text \cite{Wong2009}.
 
 
-\chapter{Second chapter}
+\section{Second section}
 
 
 \lipsum[10-23]
