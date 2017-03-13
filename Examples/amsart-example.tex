@@ -36,28 +36,28 @@
 
 
 \theoremstyle{plain} % bold environment name, italic text
-\newtheorem{thm}{Theorem}[section]
-\newtheorem*{thm*}{Theorem}
-\newtheorem{prop}[thm]{Proposition}
-\newtheorem*{prop*}{Proposition}
-\newtheorem{lem}[thm]{Lemma}
-\newtheorem{cor}[thm]{Corollary}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem*{proposition*}{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
 
 \theoremstyle{definition} % bold environment name, plain text
-\newtheorem{defn}[thm]{Definition}
-\newtheorem{example}[thm]{Example}
-\newtheorem{notation}[thm]{Notation}
+\newtheorem{defn}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
 
 
 \theoremstyle{remark} % italic environment name, plain text
-\newtheorem{rmk}[thm]{Remark}
+\newtheorem{remark}[theorem]{Remark}
 
 \newtheorem*{note}{Note}
 
 %% This makes equations follow the theorem counter
-\makeatletter\let\c@equation\c@thm\makeatother
+\makeatletter\let\c@equation\c@theorem\makeatother
 %% This makes figures follow the theorem counter
-\makeatletter\let\c@figure\c@thm\makeatother
+\makeatletter\let\c@figure\c@theorem\makeatother
 
 
 
@@ -69,6 +69,7 @@
 %%
 
 
+\usepackage{cleveref}
 
 
 
@@ -92,8 +93,8 @@
 %% redefine ref for tracking dependencies
 
 
-\let\bareref\ref 
-\renewcommand*\ref[1]{\bareref{#1}\writeref{#1}}
+\let\bareref\cref 
+\renewcommand*\cref[1]{\bareref{#1}\writeref{#1}}
 
 
 \begin{abstract}
@@ -116,7 +117,7 @@ C &= D \\
 C' &= D' \label{eq001}
 \end{align}
 
-\ref{eq001} 
+\cref{eq001} 
 
 \begin{subequations}
 \begin{align}
@@ -131,47 +132,49 @@ some text
 \end{equation}
 \end{subequations}
 
-\begin{prop}\label{someprop}
+\begin{proposition}\label{someprop}
    Text
-\end{prop}
+\end{proposition}
 
-\begin{thm}\label{thm1}
+\begin{theorem}\label{theorem1}
 	\lipsum[27]
-
+ 
 	test
-\end{thm}
+\end{theorem}
 
 \lipsum[1]
 
-\begin{proof}
-\proofof{thm1}
+\begin{proof} 
+\proofof{theorem1}
 THis is how it goes.
-\begin{lem}[Step 1]\label{parastep}
+\begin{lemma}[Step 1]\label{parastep}
 	\lipsum[9-10]
 
 	And this is sufficient.
+\end{lemma}
+
+
+Then we can apply \cref{eq1,someprop} to get the final answer.
+Here ends the proof.\writeref{a,b,c}
+\end{proof}
 
 \section{section split}
 
-\end{lem}
-Then we can apply \ref{eq1} and \ref{someprop} to get the final answer.
-Here ends the proof.
-\end{proof}
 
-\begin{rmk}\label{rmk1}
+\begin{remark}\label{rmk1}
 	\lipsum[27]
 
 	test
-\end{rmk}
+\end{remark}
 
-\begin{cor}\label{cor1}
+\begin{corollary}\label{cor1}
 	\lipsum[24]
 
 	text
-\end{cor}
+\end{corollary}
 
 \begin{pfof}{cor1}
-	By using \ref{rmk1}\writeref{rmk1}, we see that \ref{eq1} in fact implies something else. Thus the arguments in \ref{parastep} is in fact good enough to show the strengthened results. 
+	By using \cref{rmk1}\writeref{rmk1}, we see that \cref{eq1} in fact implies something else. Thus the arguments in \cref{parastep}\cref{someprop} are in fact good enough to show the strengthened results. 
 \end{pfof}
 
 \begin{equation}
@@ -180,7 +183,7 @@ Here ends the proof.
 
 \section{A section on techniques}
 
-Before doing anything else, let us recall \ref{thm1}. Also let's try \ref{parastep}.
+Before doing anything else, let us recall \cref{theorem1}. Also let's try \cref{parastep}.
 
 \lipsum[2]
 

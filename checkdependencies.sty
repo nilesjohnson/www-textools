@@ -46,13 +46,16 @@
 
 
 
-\newcommand*\writevertex[1]{
+\newcommand*\writevertex[1]{%
   \addtostream{Xrefvertices}{#1,"\getrefnumber{#1}","Label","#1",\getpagerefnumber{#1}}}
-\newcommand*\writeref[1]{\ifdef\wwwnotes@pfofctr{
-  \writevertex{\wwwnotes@pfofctr}
-  \writevertex{#1}
-  \addtostream{Xrefedges}{\wwwnotes@pfofctr,#1}
+\newcommand*\writerefsingle[1]{%
+\ifdef\wwwnotes@pfofctr{%
+    \writevertex{\wwwnotes@pfofctr}%
+    \writevertex{#1}%
+    \addtostream{Xrefedges}{\wwwnotes@pfofctr,#1}%
 }{}}
+\newcommand*\writeref[1]{\forcsvlist{\writerefsingle}{#1}}
+
  
 
 \makeatother

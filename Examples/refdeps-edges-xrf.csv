@@ -1,7 +1,11 @@
 source,target
-thm1,eq1
-thm1,someprop
+theorem1,eq1
+theorem1,someprop
+theorem1,a
+theorem1,b
+theorem1,c
 cor1,rmk1
 cor1,rmk1
 cor1,eq1
 cor1,parastep
+cor1,someprop
