@@ -22,7 +22,7 @@
 %\usepackage{constants}
 % Constants provide a way to automatically number constant/error
 % terms.
-%\usepackage[pdfusetitle]{hyperref}
+\usepackage{hyperref}
 % Remember to replace when done!
 %\usepackage{www_math_commands}
 
@@ -73,53 +73,9 @@
 
 
 
+\usepackage{../checkdependencies}
 
 
-
-
-
-\RequirePackage{ifthen}
-\RequirePackage{etoolbox}
-\RequirePackage{newfile}
-\RequirePackage[colorlinks=false]{hyperref}
-
-
-
-\makeatletter 
-
-\newenvironment{pfof}[1]%
-	{\def\wwwnotes@pfofctr{#1}\begin{proof}}%
-	{\end{proof}}
-
-%\newcommand*\marginfont{\footnotesize\itshape}
-%\setlength\marginparpush{9pt}
-%\newcommand{\marginnote}[1]{%
-%	\marginpar[\raggedleft\marginfont #1]{\raggedright\marginfont #1}}
-
-\newoutputstream{Xrefedges}
-\newoutputstream{Xrefvertices}
-\openoutputfile{\jobname-edges-xrf.csv}{Xrefedges}
-\openoutputfile{\jobname-vertices-xrf.csv}{Xrefvertices}
-\addtostream{Xrefedges}{source,target}
-\addtostream{Xrefvertices}{id,label,type,description,page}
-
-\newcommand\label@getdesc[5]{%
-	\ifcsname www@label@store@description@#1\endcsname
-		#2{#4\@nameuse{www@label@store@description@#1}#5}%
-	\else
-		#3%
-	\fi}
-
-%\AddEverypageHook{\gdef\@desc@refs@on@page{}}
-%%%%% End Margin Notes and Descriptive Labelling %%%%%
-
-
-
-%\renewcommand{\ref}[1]{\OLDref{#1}\showdesc{#1}\writeref{#1}}
-
-
-
-\makeatother
 
 
 
@@ -133,19 +89,12 @@
 
 \begin{document}
 
-\let\bareref\ref
-\makeatletter
-\newcommand*\writevertex[1]{
-  \addtostream{Xrefvertices}{#1,"\getrefnumber{#1}","Label","#1",\getpagerefnumber{#1}}}
-\newcommand*\writeref[1]{\ifdef\wwwnotes@pfofctr{
-  \writevertex{\wwwnotes@pfofctr}
-  \writevertex{#1}
-  \addtostream{Xrefedges}{\wwwnotes@pfofctr,#1}
-}{}}
-\renewcommand*\ref[1]{\bareref{#1}\writeref{#1}}
- 
+%% redefine ref for tracking dependencies
 
-\makeatother
+
+\let\bareref\ref 
+\renewcommand*\ref[1]{\bareref{#1}\writeref{#1}}
+
 
 \begin{abstract}
 \end{abstract}
@@ -194,7 +143,8 @@ some text
 
 \lipsum[1]
 
-\begin{pfof}{thm1}
+\begin{proof}
+\proofof{thm1}
 THis is how it goes.
 \begin{lem}[Step 1]\label{parastep}
 	\lipsum[9-10]
@@ -206,7 +156,7 @@ THis is how it goes.
 \end{lem}
 Then we can apply \ref{eq1} and \ref{someprop} to get the final answer.
 Here ends the proof.
-\end{pfof}
+\end{proof}
 
 \begin{rmk}\label{rmk1}
 	\lipsum[27]
@@ -261,7 +211,7 @@ K = \frac12 mv^2
 This is it.
 
 
-\bibliographystyle{amsalpha}
-\bibliography{mixmaster.bib}
+%\bibliographystyle{amsalpha}
+%\bibliography{mixmaster.bib}
 
 \end{document}

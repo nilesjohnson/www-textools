@@ -1,0 +1,60 @@
+%%%
+%%% A simple package for graphing proof dependencies
+%%% You must also redefine your ref command AFTER
+%%% \begin{document}
+%%%
+%%% Something like this:
+%%%
+%%% \let\bareref\ref 
+%%% \renewcommand*\ref[1]{\bareref{#1}\writeref{#1}}
+%%%
+
+
+
+
+
+\RequirePackage{ifthen}
+\RequirePackage{etoolbox}
+\RequirePackage{newfile}
+
+
+
+\makeatletter 
+
+
+\newcommand{\proofof}[1]{
+\def\wwwnotes@pfofctr{#1}
+}
+\newenvironment{pfof}[1]{\begin{proof}\proofof{#1}}{\end{proof}}
+
+
+
+\newoutputstream{Xrefedges}
+\newoutputstream{Xrefvertices}
+\openoutputfile{refdeps-edges-xrf.csv}{Xrefedges}
+\openoutputfile{refdeps-vertices-xrf.csv}{Xrefvertices}
+\addtostream{Xrefedges}{source,target}
+\addtostream{Xrefvertices}{id,label,type,description,page}
+
+\newcommand\label@getdesc[5]{%
+	\ifcsname www@label@store@description@#1\endcsname
+		#2{#4\@nameuse{www@label@store@description@#1}#5}%
+	\else
+		#3%
+	\fi}
+
+
+
+
+\newcommand*\writevertex[1]{
+  \addtostream{Xrefvertices}{#1,"\getrefnumber{#1}","Label","#1",\getpagerefnumber{#1}}}
+\newcommand*\writeref[1]{\ifdef\wwwnotes@pfofctr{
+  \writevertex{\wwwnotes@pfofctr}
+  \writevertex{#1}
+  \addtostream{Xrefedges}{\wwwnotes@pfofctr,#1}
+}{}}
+ 
+
+\makeatother
+
+
